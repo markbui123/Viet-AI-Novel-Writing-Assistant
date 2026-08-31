@@ -24,7 +24,7 @@ const HAN = /[\u4e00-\u9fff]/;
 const RE_DQ = /"((?:[^"\\\n]|\\.)*)"/g;
 const RE_SQ = /'((?:[^'\\\n]|\\.)*)'/g;
 const RE_TPL = /`([^`]*)`/g;
-const RE_JSX = />([^<>{}]*[\u4e00-\u9fff][^<>{}]*)</g;
+const RE_JSX = />([^<>]*[\u4e00-\u9fff][^<>]*)</g;
 
 function walk(dir, out = []) {
   for (const entry of readdirSync(dir, { withFileTypes: true })) {

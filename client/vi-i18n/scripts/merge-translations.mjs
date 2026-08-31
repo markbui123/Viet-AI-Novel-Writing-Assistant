@@ -24,6 +24,45 @@ const HAN = /[\u4e00-\u9fff]/;
 // positive; so SỐ LƯỢNG ${ là đủ để bắt lỗi rơi mất biến)
 const PH_COUNT = (s) => (s.match(/\$\{/g) ?? []).length;
 
+// SANITIZE: value không được chứa ` " ' ngoài ${...} (vỡ cú pháp code khi shim
+// thay thế trong string/template literal — "usePromptPreview.ts:84 Unterminated
+// string literal"). Đổi thành ngoặc cong “ ” ‘ ’.
+// Đồng thời: NEWLINE THẬT (model trả \n trong JSON → parse thành newline thật)
+// phải đổi về escape \n (2 ký tự) — nếu không, value nằm trong "..." sẽ vỡ string.
+// KHÔNG đụng backslash sẵn có (\\ giữ nguyên).
+function sanitizeValue(v) {
+  const parts = [];
+  let buf = "", i = 0;
+  while (i < v.length) {
+    if (v[i] === "{") {
+      let j = i + 1, depth = 1;
+      while (j < v.length && depth > 0) {
+        if (v[j] === "{") depth++;
+        else if (v[j] === "}") depth--;
+        j++;
+      }
+      if (buf) { parts.push(["t", buf]); buf = ""; }
+      parts.push(["e", v.slice(i, j)]);
+      i = j;
+    } else { buf += v[i]; i++; }
+  }
+  if (buf) parts.push(["t", buf]);
+  return parts.map(([typ, seg]) => {
+    if (typ === "e") return seg;
+    let dq = true, sq = true, bt = true, out = "";
+    for (const ch of seg) {
+      if (ch === '"') { out += dq ? "“" : "”"; dq = !dq; }
+      else if (ch === "'") { out += sq ? "‘" : "’"; sq = !sq; }
+      else if (ch === "`") { out += bt ? "“" : "”"; bt = !bt; }
+      else if (ch === "\n") out += "\\n";
+      else if (ch === "\r") out += "\\r";
+      else if (ch === "\t") out += "\\t";
+      else out += ch;
+    }
+    return out;
+  }).join("");
+}
+
 const dict = existsSync(DICT_PATH) ? JSON.parse(readFileSync(DICT_PATH, "utf8")) : {};
 let added = 0, conflicts = 0, skipped = 0, errors = [];
 
@@ -47,7 +86,7 @@ for (const f of batchFiles) {
       errors.push(`${f}: số placeholder khác nhau (${PH_COUNT(zh)} vs ${PH_COUNT(vi)}) cho ${JSON.stringify(zh.slice(0, 50))}`);
       continue;
     }
-    dict[zh] = vi;
+    dict[zh] = sanitizeValue(vi);
     added++;
   }
 }

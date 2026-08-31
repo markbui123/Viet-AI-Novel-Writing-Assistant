@@ -1,0 +1,458 @@
+[
+ {
+  "s": "第 {item.episode.order} 集：{item.episode.title}",
+  "n": 2
+ },
+ {
+  "s": "第 {panel.order} 格",
+  "n": 2
+ },
+ {
+  "s": "第{selectedVolume.sortOrder}卷",
+  "n": 2
+ },
+ {
+  "s": "第{volume.sortOrder}卷",
+  "n": 2
+ },
+ {
+  "s": "适合：{template.applicableGenres.join(\" / \")}",
+  "n": 2
+ },
+ {
+  "s": "下一反转点：{relation.nextTurnPoint}",
+  "n": 2
+ },
+ {
+  "s": "执行后：{props.consequence}",
+  "n": 2
+ },
+ {
+  "s": "0 ? `(${pendingCount}格)` : \"\"}`}",
+  "n": 1
+ },
+ {
+  "s": "本次识别 {items.length} 条公开上榜记录（最多 30 条）",
+  "n": 1
+ },
+ {
+  "s": "本章参考了 {plan.sourceIssueIds.length} 条待处理审计问题。",
+  "n": 1
+ },
+ {
+  "s": "待保存任务 {dirtyTaskTypes.length} 个；检测异常任务 {failedTaskTypes.length} 个；空白路由 {emptyRouteTaskTypes.length} 个。",
+  "n": 1
+ },
+ {
+  "s": "待操作 {pendingActionCount} 项",
+  "n": 1
+ },
+ {
+  "s": "待兑现 {ledgerSummary?.pendingCount ?? 0}",
+  "n": 1
+ },
+ {
+  "s": "待兑现 {openPayoffRows.length}",
+  "n": 1
+ },
+ {
+  "s": "当前 v{document.activeVersionNumber} · 共 {document.versionCount} 个版本 · {formatDocumentKind(document.kind)}",
+  "n": 1
+ },
+ {
+  "s": "当前：第{selectedVolume.sortOrder}卷",
+  "n": 1
+ },
+ {
+  "s": "当前按「{selectedProfile.name}」这套写法来做检测和修正。这里只处理正文的 AI 味，不会改写法字段本身。",
+  "n": 1
+ },
+ {
+  "s": "当前将执行：{scopeLabel}",
+  "n": 1
+ },
+ {
+  "s": "当前卷已生成 {selectedVolumeChapters.length}/{selectedVolumeRequiredChapterCount} 章，仍有节奏段待生成。已生成章节可以先细化和开写，后续段按需继续生成。",
+  "n": 1
+ },
+ {
+  "s": "当前推进模式数：{totalStoryModes}",
+  "n": 1
+ },
+ {
+  "s": "当前页面：{currentPageLabel}",
+  "n": 1
+ },
+ {
+  "s": "当前展示 {contentPanelWordCount} 字",
+  "n": 1
+ },
+ {
+  "s": "当前最高风险：{latestRisk.score}/8",
+  "n": 1
+ },
+ {
+  "s": "导入前会自动备份当前桌面数据库到：{snapshot?.backupDirectory ?? \"-\"}",
+  "n": 1
+ },
+ {
+  "s": "低分章节 {lowScoreRange.count} 个，可重跑范围：第 {lowScoreRange.startOrder} 章 - 第 {lowScoreRange.endOrder} 章。",
+  "n": 1
+ },
+ {
+  "s": "低分章节筛选（阈值 {pipelineForm.qualityThreshold}）",
+  "n": 1
+ },
+ {
+  "s": "第 {ep.order} 话 {ep.title ? `《${ep.title}》` : \"\"}",
+  "n": 1
+ },
+ {
+  "s": "第 {ep.order} 话 {ep.title ? `《${ep.title}》` : \"\"}（{ep._count?.panels ?? 0} 格）",
+  "n": 1
+ },
+ {
+  "s": "第 {episode.order} 话",
+  "n": 1
+ },
+ {
+  "s": "第 {episode.order} 集 {episode.title}",
+  "n": 1
+ },
+ {
+  "s": "第 {order} 话",
+  "n": 1
+ },
+ {
+  "s": "第 {pagination.page} / {pagination.totalPages} 页，共 {pagination.total} 条",
+  "n": 1
+ },
+ {
+  "s": "第 {props.episode.order} 集",
+  "n": 1
+ },
+ {
+  "s": "第 {props.pagination?.page ?? 1} / {totalPages} 页，共 {props.pagination?.total ?? 0} 条",
+  "n": 1
+ },
+ {
+  "s": "第 {selectedEpisode.order} 集：{selectedEpisode.title}",
+  "n": 1
+ },
+ {
+  "s": "第 {selectedVolume.sortOrder} 卷",
+  "n": 1
+ },
+ {
+  "s": "第 {volume.order} 卷 · {volume.title}",
+  "n": 1
+ },
+ {
+  "s": "第{beat.volumeOrder}卷 · {beat.beatLabel}{beat.beatTitle ? ` · ${beat.beatTitle}` : \"\"}",
+  "n": 1
+ },
+ {
+  "s": "第{chapterDetailFailure.chapterOrder}章的{chapterDetailFailure.mode === \"purpose\" ? \"章节目标\" : chapterDetailFailure.mode === \"boundary\" ? \"执行边界\" : \"任务单\"}未完成",
+  "n": 1
+ },
+ {
+  "s": "分集：{props.project.episodes?.length ?? 0} 集",
+  "n": 1
+ },
+ {
+  "s": "该分析基于旧版源文档，当前激活文档版本为 v{selectedAnalysis.currentDocumentVersionNumber}。",
+  "n": 1
+ },
+ {
+  "s": "高级动作：{impactResult.advancedImpactActions.join(\" / \")}",
+  "n": 1
+ },
+ {
+  "s": "根据当前节奏板，这一卷预计覆盖 {selectedVolumeRequiredChapterCount} 章。可以先生成下一段章节，后续段按需继续拆。",
+  "n": 1
+ },
+ {
+  "s": "更新于 {formatDate(task.updatedAt)}",
+  "n": 1
+ },
+ {
+  "s": "共 {assets.length} 张候选图",
+  "n": 1
+ },
+ {
+  "s": "关联 {document.bookAnalysisCount} 个拆书项目",
+  "n": 1
+ },
+ {
+  "s": "还需补前置条件 {summary.blockedCount}",
+  "n": 1
+ },
+ {
+  "s": "和 {props.characterName} 聊聊",
+  "n": 1
+ },
+ {
+  "s": "画幅：{prompt.aspectRatio}",
+  "n": 1
+ },
+ {
+  "s": "会按“{selectedPreset.label}”提交后台任务。任务完成后系统会自动保存，不需要再手动点一次保存成写法。",
+  "n": 1
+ },
+ {
+  "s": "会跳过：{selectedPreview.skipSteps.join(\" / \")}",
+  "n": 1
+ },
+ {
+  "s": "活动版本 v{document.activeVersionNumber} · {document.versionCount} 个版本 · {document.bookAnalysisCount} 个拆书结果",
+  "n": 1
+ },
+ {
+  "s": "集合版本 v{form.collectionVersion} · 集合命名、索引重建、检索质量和后台任务参数",
+  "n": 1
+ },
+ {
+  "s": "加入当前分层（{selectedLayerPrimaryField}）",
+  "n": 1
+ },
+ {
+  "s": "兼容字段主要用于旧资产兼容和少量实验场景：{compatibilityFields}。需要稳定控制读感时，优先维护表达层摘要和反 AI 规则。",
+  "n": 1
+ },
+ {
+  "s": "检测到 {selectedRebalance.length} 条相邻卷再平衡建议。它们会影响跨卷衔接，但不属于当前主编辑动作。",
+  "n": 1
+ },
+ {
+  "s": "检查点：{takeover.checkpointLabel}",
+  "n": 1
+ },
+ {
+  "s": "检查点摘要：{detail.checkpointSummary ?? \"暂无\"}",
+  "n": 1
+ },
+ {
+  "s": "卷：{relation.volumeTitle}",
+  "n": 1
+ },
+ {
+  "s": "可设置范围：{limits.minMinutes}-{limits.maxMinutes} 分钟。保存后，新提交和重试的写法提取任务会使用该等待时间。",
+  "n": 1
+ },
+ {
+  "s": "来源快照 {formatCharCount(activeKnowledgeVersion.charCount)}",
+  "n": 1
+ },
+ {
+  "s": "来源文档：{selectedBookAnalysis.documentTitle} · v{selectedBookAnalysis.documentVersionNumber}",
+  "n": 1
+ },
+ {
+  "s": "力量体系 · {filteredPower.length} 项",
+  "n": 1
+ },
+ {
+  "s": "另有 {materials.characterCount - displayedCharacters.length} 位角色已纳入生产。",
+  "n": 1
+ },
+ {
+  "s": "命中 {index + 1} | {hit.source === \"reranked\" ? \"重排\" : hit.source === \"vector\" ? \"向量\" : \"关键词\"} | 分块 #{hit.chunkOrder + 1}",
+  "n": 1
+ },
+ {
+  "s": "命中规则：{props.report.appliedRuleIds.length}",
+  "n": 1
+ },
+ {
+  "s": "批量建议：{batchApplicableCount} 个角色可写入",
+  "n": 1
+ },
+ {
+  "s": "其中预置 {starterProfiles.length} 套，适合直接复制思路后再改。",
+  "n": 1
+ },
+ {
+  "s": "请输入 {formatTokenCount(MIN_BUDGET_TOKENS)} 到 {formatTokenCount(MAX_BUDGET_TOKENS)} 之间的整数。",
+  "n": 1
+ },
+ {
+  "s": "请输入 {limits.minMinutes}-{limits.maxMinutes} 分钟之间的整数。",
+  "n": 1
+ },
+ {
+  "s": "请输入：{acknowledgementText}",
+  "n": 1
+ },
+ {
+  "s": "审批项 {index + 1}",
+  "n": 1
+ },
+ {
+  "s": "时长：{prompt.durationSec} 秒",
+  "n": 1
+ },
+ {
+  "s": "时长：{selectedEpisode.durationSec ?? \"待生成\"} 秒",
+  "n": 1
+ },
+ {
+  "s": "使用窗口：第{resource.expectedUseStartChapterOrder ?? \"?\"}章至第{resource.expectedUseEndChapterOrder}章",
+  "n": 1
+ },
+ {
+  "s": "锁定段 {impactResult.lockedBeatCount}",
+  "n": 1
+ },
+ {
+  "s": "通道：{latestProgress.provider}",
+  "n": 1
+ },
+ {
+  "s": "通道：{progress.provider}",
+  "n": 1
+ },
+ {
+  "s": "推荐 {strategyPlan.recommendedVolumeCount} 卷",
+  "n": 1
+ },
+ {
+  "s": "完整度 {Math.round(skeleton.assessment.completenessScore)} / 100",
+  "n": 1
+ },
+ {
+  "s": "未写段 {impactResult.staleBeatCount}",
+  "n": 1
+ },
+ {
+  "s": "无法完成这次检查。{query.error instanceof Error ? query.error.message : \"请稍后重试。\"}",
+  "n": 1
+ },
+ {
+  "s": "需保留：{section.slot.requiredTokens.join(\"、\")}",
+  "n": 1
+ },
+ {
+  "s": "选择《{novelTitle?.trim() || \"这本小说\"}》的创作界面",
+  "n": 1
+ },
+ {
+  "s": "已绑定世界观《{worldName}》。",
+  "n": 1
+ },
+ {
+  "s": "已绑定知识资料：{currentBindings.knowledgeDocumentIds.length} 份",
+  "n": 1
+ },
+ {
+  "s": "已就绪 {setup.completedCount}/{setup.totalCount} 项",
+  "n": 1
+ },
+ {
+  "s": "已选 {selectedReferenceAssetIds.length} 张",
+  "n": 1
+ },
+ {
+  "s": "已选参考：知识库 {selectedKnowledgeDocumentIds.length} 项，拆书 {selectedBookAnalysisIds.length} 项。",
+  "n": 1
+ },
+ {
+  "s": "已选择 {selectedIds.length} 个文档。保持为空会显式关闭知识库检索。",
+  "n": 1
+ },
+ {
+  "s": "已选择 {selectedNovel.title || \"未命名小说\"}，共 {selectedNovel._count.chapters} 章。创建后会先整理为短剧素材包。",
+  "n": 1
+ },
+ {
+  "s": "已整理素材：{props.project.sourceBundle ? \"是\" : \"否\"}",
+  "n": 1
+ },
+ {
+  "s": "已自动分段提取：原文 {inspirationSourceMeta.originalLength} 字符，切分 {inspirationSourceMeta.chunkCount} 段。",
+  "n": 1
+ },
+ {
+  "s": "硬规划 {strategyPlan.hardPlannedVolumeCount} 卷",
+  "n": 1
+ },
+ {
+  "s": "硬上限 {lengthControl.hardMaxWordCount} 字",
+  "n": 1
+ },
+ {
+  "s": "硬停 {lengthControl.hardStopsTriggered} 次",
+  "n": 1
+ },
+ {
+  "s": "与本章/本卷目标的对齐：{session.macroAlignmentNote}",
+  "n": 1
+ },
+ {
+  "s": "约 {candidate.targetChapterCount} 章",
+  "n": 1
+ },
+ {
+  "s": "约 {estimate.estimatedCentsCost} ¢",
+  "n": 1
+ },
+ {
+  "s": "约 {scriptConfig.targetPanelCount} 格",
+  "n": 1
+ },
+ {
+  "s": "约 {targetPanelCount} 格",
+  "n": 1
+ },
+ {
+  "s": "允许范围：{volumeCountGuidance.allowedVolumeCountRange.min}-{volumeCountGuidance.allowedVolumeCountRange.max} 卷。固定卷数会覆盖结构建议。",
+  "n": 1
+ },
+ {
+  "s": "这套写法在提取阶段额外建议了 {profile.extractionAntiAiRecommendationCount} 条反 AI 规则，适合后续继续精配。",
+  "n": 1
+ },
+ {
+  "s": "正在为“{selectedCharacter.name}”整理外貌、体态、声音和登场记忆点。",
+  "n": 1
+ },
+ {
+  "s": "知识文档: {bindings.knowledgeDocumentIds?.length ?? 0} 份",
+  "n": 1
+ },
+ {
+  "s": "执行区 {executionChapterCount} 章",
+  "n": 1
+ },
+ {
+  "s": "止：第 {chapter.chapterIndex + 1} 章 · {shortTitle(chapter.title)}",
+  "n": 1
+ },
+ {
+  "s": "重试 {progress!.failedPanelIds.length} 格",
+  "n": 1
+ },
+ {
+  "s": "重要度 {formatScorePercent(feature.importance)}",
+  "n": 1
+ },
+ {
+  "s": "自动导演会参考「{selectedWorld.name}」这个世界样本，并在角色准备前整理可用于本书的世界约束。",
+  "n": 1
+ },
+ {
+  "s": "自动推进 {progressCount} 项",
+  "n": 1
+ },
+ {
+  "s": "阻塞 {criticalCount} 项",
+  "n": 1
+ },
+ {
+  "s": "最多不超过全书规划的 {maxChapterCount} 章。",
+  "n": 1
+ },
+ {
+  "s": "JSON 修复 {result.meta.repairAttempts ?? 0} 次",
+  "n": 1
+ }
+]

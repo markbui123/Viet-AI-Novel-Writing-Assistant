@@ -27,8 +27,8 @@ if (!BASE || !KEY) {
   process.exit(1);
 }
 
-const SUBSIZE = 25; // chuỗi mỗi request — call ngắn (~14s) ít bị 504 hơn, throughput cao hơn
-const CONCURRENCY = 2; // thấp để không bị proxy rate-limit (429)
+const SUBSIZE = 15; // chuỗi mỗi request — model free tier giới hạn output ngắn hơn
+const CONCURRENCY = 1; // serial: proxy giới hạn token/phút ("Token Plan usage limit reached, reset ~24s")
 const FORCE = process.argv.includes("--force");
 const FETCH_TIMEOUT_MS = 150000;
 
@@ -36,25 +36,64 @@ const SYSTEM = `Bạn là chuyên gia dịch UI của app AI viết tiểu thuy�
 
 Quy tắc bắt buộc:
 1. Giữ nguyên \${...} placeholder (tên biến và số lượng không đổi).
-2. Giữ nguyên thương hiệu/thuật ngữ kỹ thuật: OpenAI, DeepSeek, Ollama, Qdrant, RAG, API, model, prompt, token, URL, SQLite, JSON, AI.
-3. Thuật ngữ cố định: 小说=tiểu thuyết, 创作=sáng tác, 章节=chương, 卷=tập, 世界观=thế giới quan, 角色=nhân vật, 主角=nhân vật chính, 知识库=kho tri thức, 写法引擎=công cụ cách viết, 任务=nhiệm vụ, 自动导演=Đạo diễn AI, 模型=model, 生成=tạo, 审核=thẩm định, 修复=sửa chữa, 拆书=phân tích sách, 灵感=ý tưởng, 类型=thể loại, 题材=đề tài, 风格=phong cách, 文风=văn phong, 节奏=nhịp điệu, 剧情=cốt truyện, 大纲=dàn ý, 背景=bối cảnh, 设定=thiết lập, 资产=tài sản, 资源=tài nguyên, 模板=mẫu, 版本=phiên bản, 状态=trạng thái, 设置=cài đặt, 新建=tạo mới, 删除=xóa, 编辑=chỉnh sửa, 保存=lưu, 确认=xác nhận, 取消=hủy, 重试=thử lại, 加载中=đang tải, 搜索=tìm kiếm, 返回=quay lại, 首页=trang chủ, 列表=danh sách, 详情=chi tiết, 全部=tất cả, 暂无=chưa có, 已完成=đã hoàn thành, 失败=thất bại, 成功=thành công, 排队中=đang xếp hàng, 已取消=đã hủy, 待补全=chờ bổ sung, 保存中=đang lưu, 生成中=đang tạo.
-4. Chuỗi ngắn đơn lẻ: 无=Không có, 中=Đang chạy (hoặc "Trung bình" trong cụm 高中低), 高=Cao, 低=Thấp, 新=Mới.
-5. Dịch tự nhiên, gọn, chuẩn UI tiếng Việt, không word-for-word; chuỗi là cụm con thì dịch nghĩa độc lập của cụm đó.
-6. MỌI chuỗi trong request phải có mặt trong response (không bỏ sót chuỗi nào).
-7. Output PHẢI là JSON hợp lệ, UTF-8.`;
+2. Nếu chuỗi chứa biểu thức JSX dạng {tenBien} hoặc {dieuKien ? "a" : "b"} (dấu ngoặc nhọn đơn), giữ NGUYÊN cả biểu thức bên trong {} — chỉ dịch phần chữ tiếng Trung bên ngoài.
+3. Giữ nguyên thương hiệu/thuật ngữ kỹ thuật: OpenAI, DeepSeek, Ollama, Qdrant, RAG, API, model, prompt, token, URL, SQLite, JSON, AI.
+4. Thuật ngữ cố định: 小说=tiểu thuyết, 创作=sáng tác, 章节=chương, 卷=tập, 世界观=thế giới quan, 角色=nhân vật, 主角=nhân vật chính, 知识库=kho tri thức, 写法引擎=công cụ cách viết, 任务=nhiệm vụ, 自动导演=Đạo diễn AI, 模型=model, 生成=tạo, 审核=thẩm định, 修复=sửa chữa, 拆书=phân tích sách, 灵感=ý tưởng, 类型=thể loại, 题材=đề tài, 风格=phong cách, 文风=văn phong, 节奏=nhịp điệu, 剧情=cốt truyện, 大纲=dàn ý, 背景=bối cảnh, 设定=thiết lập, 资产=tài sản, 资源=tài nguyên, 模板=mẫu, 版本=phiên bản, 状态=trạng thái, 设置=cài đặt, 新建=tạo mới, 删除=xóa, 编辑=chỉnh sửa, 保存=lưu, 确认=xác nhận, 取消=hủy, 重试=thử lại, 加载中=đang tải, 搜索=tìm kiếm, 返回=quay lại, 首页=trang chủ, 列表=danh sách, 详情=chi tiết, 全部=tất cả, 暂无=chưa có, 已完成=đã hoàn thành, 失败=thất bại, 成功=thành công, 排队中=đang xếp hàng, 已取消=đã hủy, 待补全=chờ bổ sung, 保存中=đang lưu, 生成中=đang tạo.
+5. Chuỗi ngắn đơn lẻ: 无=Không có, 中=Đang chạy (hoặc "Trung bình" trong cụm 高中低), 高=Cao, 低=Thấp, 新=Mới.
+6. Dịch tự nhiên, gọn, chuẩn UI tiếng Việt, không word-for-word; chuỗi là cụm con thì dịch nghĩa độc lập của cụm đó.
+7. MỌI chuỗi trong request phải có mặt trong response (không bỏ sót chuỗi nào).
+8. Output PHẢI là JSON hợp lệ, UTF-8.`;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-function parseContent(content) {
-  let c = content;
+function parseContent(raw) {
+  let c = raw;
   // bỏ các dòng SSE nếu proxy trả kiểu data: ...
   c = c.split("\n").filter((l) => !l.trim().startsWith("data:")).join("\n");
   c = c.replace(/<think>[\s\S]*?<\/think>/g, "");
-  c = c.replace(/```json|```/g, "");
+  c = c.replace(/```json|```/g, "").trim();
+  let obj = null;
+  try { obj = JSON.parse(c); } catch { /* thử cách khác */ }
+  if (!obj) {
+    const s = c.indexOf("{"), e = c.lastIndexOf("}");
+    if (s !== -1 && e > s) { try { obj = JSON.parse(c.slice(s, e + 1)); } catch { /* vẫn chưa được */ } }
+  }
+  if (!obj) throw new Error("Không parse được JSON từ response");
+  // Nếu là wrapper chat.completion → lấy message.content (có thể là JSON bị escape)
+  if (obj.choices && Array.isArray(obj.choices) && obj.choices[0]?.message && typeof obj.choices[0].message.content === "string") {
+    const inner = obj.choices[0].message.content;
+    let innerObj = null;
+    try { innerObj = JSON.parse(inner); } catch { }
+    if (!innerObj) {
+      try { innerObj = JSON.parse(extractJsonObject(inner)); } catch { }
+    }
+    if (innerObj) return innerObj;
+    throw new Error("message.content không phải JSON");
+  }
+  return obj;
+}
+
+// Trích JSON object ĐẦU TIÊN cân bằng ngoặc — chịu được trailing text sau JSON
+function extractJsonObject(c) {
   const start = c.indexOf("{");
-  const end = c.lastIndexOf("}");
-  if (start === -1 || end === -1) throw new Error("Không tìm thấy JSON trong response");
-  return JSON.parse(c.slice(start, end + 1));
+  if (start === -1) throw new Error("Không tìm thấy JSON trong response");
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < c.length; i++) {
+    const ch = c[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (ch === "\\") esc = true;
+      else if (ch === '"') inStr = false;
+    } else {
+      if (ch === '"') inStr = true;
+      else if (ch === "{") depth++;
+      else if (ch === "}") {
+        depth--;
+        if (depth === 0) return c.slice(start, i + 1);
+      }
+    }
+  }
+  throw new Error("JSON không cân bằng ngoặc");
 }
 
 async function callLLM(strings) {
@@ -82,7 +121,9 @@ async function callLLM(strings) {
     // QUIRK proxy hatinhcogi: body = JSON hợp lệ + "\ndata: [DONE]\n" chèn sau
     // → không dùng res.json() trực tiếp; strip dòng "data:" rồi parse
     const text = await res.text();
+    // QUIRK proxy hatinhcogi: "data: [DONE]" chèn NGAY SAU "}" (cùng dòng) — xóa bằng regex
     const cleaned = text
+      .replace(/data: \[DONE\]/g, "")
       .split("\n")
       .filter((l) => !l.trim().startsWith("data:"))
       .join("\n");
@@ -93,6 +134,13 @@ async function callLLM(strings) {
   } finally {
     clearTimeout(timer);
   }
+}
+
+// Model có thể trả object {key:value} hoặc array [v0, v1...] — lookup theo cả 2
+function lookupValue(parsed, s, idx) {
+  if (parsed && typeof parsed === "object" && !Array.isArray(parsed) && typeof parsed[s] === "string") return parsed[s];
+  if (Array.isArray(parsed) && typeof parsed[idx] === "string") return parsed[idx];
+  return undefined;
 }
 
 async function translateChunk(n) {
@@ -122,16 +170,17 @@ async function translateChunk(n) {
         parsed = await callLLM(sub);
       } catch (e) {
         console.warn(`  [${n}] sub ${i} lần ${attempt} lỗi: ${e.message.slice(0, 100)}`);
-        // 429 (rate-limit) cần chờ lâu hơn hẳn — 30s cho cửa sổ reset
-        await sleep(e.message.includes("429") ? 30000 : 3000 * attempt);
+        // 429 (rate-limit) cần chờ lâu hơn hẳn — 45s cho cửa sổ reset token/phút
+        await sleep(e.message.includes("429") ? 45000 : 3000 * attempt);
       }
     }
     if (!parsed) {
       missing.push(...sub);
       continue;
     }
-    for (const s of sub) {
-      const v = parsed[s];
+    for (let idx = 0; idx < sub.length; idx++) {
+      const s = sub[idx];
+      const v = lookupValue(parsed, s, idx);
       if (typeof v === "string" && v.trim()) result[s] = v;
       else missing.push(s);
     }
@@ -150,8 +199,9 @@ async function translateChunk(n) {
       const sub = toRetry.slice(i, i + SUBSIZE);
       try {
         const parsed = await callLLM(sub);
-        for (const s of sub) {
-          const v = parsed[s];
+        for (let idx = 0; idx < sub.length; idx++) {
+          const s = sub[idx];
+          const v = lookupValue(parsed, s, idx);
           if (typeof v === "string" && v.trim()) result[s] = v;
           else missing.push(s);
         }
