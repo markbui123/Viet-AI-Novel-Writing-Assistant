@@ -2,6 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
+import { viTranslatePlugin } from "./vi-i18n/vite-plugin-vi-translate";
 
 interface DesktopPackageJson {
   version?: unknown;
@@ -64,7 +65,7 @@ const appVersion = resolveDesktopAppVersion();
 
 export default defineConfig({
   base: isDesktopRelativeBaseBuild ? "./" : "/",
-  plugins: [react()],
+  plugins: [react(), viTranslatePlugin()],
   define: {
     "import.meta.env.VITE_APP_VERSION": JSON.stringify(appVersion),
   },
