@@ -1,53 +1,53 @@
-# GitHub Pages 介绍网站
+# Trang giới thiệu GitHub Pages
 
-这个目录是项目的公开介绍站，使用 React + Vite 构建为静态文件，可由 GitHub Pages 托管。
+Thư mục này là trang giới thiệu công khai của dự án, dùng React + Vite build thành file tĩnh, có thể lưu trữ bằng GitHub Pages.
 
-## 本地预览
+## Xem trước cục bộ
 
 ```bash
 pnpm --filter @ai-novel/site dev
 ```
 
-默认监听 `http://localhost:4173`（与主项目 client 的 3000 端口隔开，避免和其它 vite 项目默认的 5173 端口冲突）。
+Mặc định lắng nghe `http://localhost:4173` (tách với cổng 3000 của client dự án chính, tránh xung đột với cổng 5173 mặc định của các dự án vite khác).
 
-## 构建
+## Build
 
 ```bash
 pnpm --filter @ai-novel/site build
 ```
 
-构建产物输出到 `site/dist`。
+Sản phẩm build xuất ra `site/dist`.
 
-## 文档登记校验
+## Kiểm tra đăng ký tài liệu
 
-公开文档入口由 `src/docsManifest.ts` 维护。新增公开文档后运行：
+Lối vào tài liệu công khai do `src/docsManifest.ts` bảo trì. Sau khi thêm tài liệu công khai, chạy:
 
 ```bash
 pnpm check:docs-manifest
 ```
 
-校验会扫描 `docs/public/**/*.md` 和 `docs/releases/release-notes.md`，确认每个公开文档都已登记到 manifest，且没有登记不存在的文件。
+Kiểm tra sẽ quét `docs/public/**/*.md` và `docs/releases/release-notes.md`, xác nhận mọi tài liệu công khai đã đăng ký vào manifest, và không có đăng ký file không tồn tại.
 
-校验也会读取 `server/src/services/novel/director/projections/novelDirectorProgress.ts` 中的 `DirectorProgressItemKey`，并确认 `docs/public/flow/auto-director-pipeline.md` 顶部的 `DIRECTOR_PROGRESS_ITEM_KEYS` 覆盖所有自动导演进度阶段。
+Kiểm tra cũng đọc `DirectorProgressItemKey` trong `server/src/services/novel/director/projections/novelDirectorProgress.ts`, và xác nhận `DIRECTOR_PROGRESS_ITEM_KEYS` ở đầu `docs/public/flow/auto-director-pipeline.md` phủ hết mọi giai đoạn tiến độ Đạo diễn AI.
 
 ## GitHub Pages
 
-`.github/workflows/site-pages.yml` 会在推送到 `main` 或手动触发时构建 `@ai-novel/site`，并把 `site/dist` 发布到 GitHub Pages。
+`.github/workflows/site-pages.yml` sẽ build `@ai-novel/site` khi push lên `main` hoặc trigger thủ công, và phát hành `site/dist` lên GitHub Pages.
 
-## 文档入口
+## Lối vào tài liệu
 
-站点内置 `#/docs` 文档入口。公开文档通过 `src/docsManifest.ts` 白名单维护，来源限定为 `docs/public/` 下的用户向文档、`docs/public/modules/` 下的侧栏模块介绍，以及 `docs/releases/release-notes.md`。
+Trang có sẵn lối vào tài liệu `#/docs`. Tài liệu công khai được bảo trì bằng whitelist `src/docsManifest.ts`, nguồn giới hạn ở tài liệu hướng người dùng trong `docs/public/`, giới thiệu mô-đun sidebar trong `docs/public/modules/`, và `docs/releases/release-notes.md`.
 
-不要把整个 `docs/` 目录自动挂到公开站点，内部 wiki、`archive`、`checkpoints`、`plans` 和未整理的执行计划默认不展示。
+Không tự động gắn toàn bộ thư mục `docs/` vào trang công khai; wiki nội bộ, `archive`, `checkpoints`, `plans` và các kế hoạch thực thi chưa gọn không hiển thị mặc định.
 
-新增模块文档的推荐流程：
+Quy trình đề xuất khi thêm tài liệu mô-đun:
 
-1. 在 `docs/public/` 或 `docs/public/modules/` 下新增 Markdown 文件。
-2. 在 `site/src/docsManifest.ts` 里登记 `id`、标题、描述和 `sourcePath`。
-3. 需要在首页强化入口时，再更新 `site/src/App.tsx` 的文案或 teaser。
-4. 运行 `pnpm check:docs-manifest`。
-5. 运行 `pnpm --filter @ai-novel/site build`。
+1. Thêm file Markdown trong `docs/public/` hoặc `docs/public/modules/`.
+2. Đăng ký `id`, tiêu đề, mô tả và `sourcePath` trong `site/src/docsManifest.ts`.
+3. Cần tăng cường lối vào ở trang chủ thì cập nhật thêm copy hoặc teaser trong `site/src/App.tsx`.
+4. Chạy `pnpm check:docs-manifest`.
+5. Chạy `pnpm --filter @ai-novel/site build`.
 
-文档内容由 `src/docsContent.ts` 使用 Vite glob 自动加载，不需要为每篇 Markdown 手写 import。
+Nội dung tài liệu do `src/docsContent.ts` dùng Vite glob tự tải, không cần viết tay import cho từng bài Markdown.
 
-深度文档中的流程图放在 `docs/public/flow/diagrams/`。站点通过 `src/docsAssets.ts` 把这些 SVG/PNG 解析为构建产物 URL，Markdown 可以使用相对路径引用，例如 `![端到端三层生产链](./diagrams/end-to-end-production.svg)`。
+Sơ đồ trong tài liệu chuyên sâu đặt ở `docs/public/flow/diagrams/`. Trang dùng `src/docsAssets.ts` phân giải các SVG/PNG đó thành URL sản phẩm build, Markdown có thể tham chiếu bằng đường dẫn tương đối, ví dụ `![Chuỗi sản xuất ba tầng đầu cuối](./diagrams/end-to-end-production.svg)`.

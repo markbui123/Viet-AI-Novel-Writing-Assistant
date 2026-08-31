@@ -1,8 +1,12 @@
 # AI 小说创作工作台 / AI Novel Production Engine
-一个面向长篇小说创作的 AI Native 开源项目。
 
-当前开发主线：
-`Creative Hub + 自动导演开书 + 本书世界上下文 + 整本生产主链 + 写法引擎`
+> **🇻🇳 Fork tiếng Việt** — bản này là `markbui123/Viet-AI-Novel-Writing-Assistant`, giao diện và tài liệu đã được Việt hoá qua lớp dịch build-time (`client/vi-i18n/`), vẫn có thể kéo bản mới từ upstream `ExplosiveCoderflome/AI-Novel-Writing-Assistant`.
+> Bản README gốc tiếng Trung được cập nhật từ upstream; nếu có xung đột khi merge, ưu tiên giữ bản tiếng Việt.
+
+Một dự án mã nguồn mở AI Native dành cho sáng tác tiểu thuyết dài kỳ.
+
+Đường phát triển chính hiện tại:
+`Creative Hub + Đạo diễn AI mở sách + Ngữ cảnh thế giới cuốn sách + Chuỗi sản xuất trọn cuốn + Công cụ cách viết`
 
 ![Monorepo](https://img.shields.io/badge/Monorepo-pnpm%20workspace-3C873A)
 ![Frontend](https://img.shields.io/badge/Frontend-React%20%2B%20Vite-61DAFB)
@@ -13,342 +17,341 @@
 ![Database](https://img.shields.io/badge/Database-SQLite%20%2B%20Prisma-111827)
 ![Vector DB](https://img.shields.io/badge/RAG-Qdrant-E63946)
 
+## ✨ Giới thiệu dự án
 
-## ✨ 项目简介
+Đây là một **hệ thống sản xuất AI hướng tới hoàn thành tiểu thuyết dài kỳ**, không phải kiểu "bạn viết một câu, AI bổ sung một câu" như các ứng dụng chat thông thường.
 
-这是一个**面向长篇小说完成度的 AI 生产系统**，不是普通的"你写一句、AI 补一句"聊天壳子。
+Cách tiếp cận cốt lõi:
 
-它的核心做法是：
+- 👉 Dùng một câu ý tưởng khởi động kế hoạch cho cả cuốn sách — AI tự đề xuất hướng đi / thế giới / nhân vật / chiến lược tập / nhiệm vụ chương
+- 👉 Nối việc sinh chương, hiệu đính, sửa chữa và cập nhật trạng thái thành một chuỗi sản xuất có thể tạm dừng và khôi phục
+- 👉 Biến phân tích sách, kho tri thức, công cụ cách viết, sổ cái tài sản nhân vật và sổ tay thế giới thành tài sản dài hạn có thể triệu hồi
+- 👉 Cung cấp các xưởng phái sinh (truyện tranh, phim ngắn) để mở rộng hình ảnh và kịch bản từ nội dung tiểu thuyết đã hoàn thành
+- 👉 Kèm trang giới thiệu công khai, tài liệu chuyên sâu về chuỗi sản xuất và sổ tay khôi phục theo từng giai đoạn
 
-- 👉 用一句灵感启动整本书的规划，AI 自动给出方向 / 世界 / 角色 / 卷战略 / 章节任务
-- 👉 把章节生成、审核、修复、状态回灌串成可暂停可恢复的生产链
-- 👉 把拆书、知识库、写法引擎、角色资源账本、世界手册都做成可召回的长期资产
-- 👉 提供漫画、短剧等衍生工坊围绕已完成的小说内容做视觉与剧本延展
-- 👉 配套公开介绍站、生产链深度文档和按阶段的恢复手册
+Phù hợp với **người mới hoàn toàn chưa biết viết lách** muốn hoàn thành một cuốn tiểu thuyết dài, cũng phù hợp với các nhà phát triển muốn nghiên cứu ứng dụng AI Native, Agent Workflow, điều phối LangGraph và các tác vụ chuỗi dài.
 
-适合**完全不懂写作的新手**走完一本长篇，也适合研究 AI Native 应用、Agent Workflow、LangGraph 编排和长链路任务的开发者参考。
+## Bản desktop Windows
 
-## Windows 桌面版
+Nếu bạn chỉ muốn tải về cài đặt và dùng ngay, hãy vào từ bản desktop:
 
-如果你只是想直接下载安装并开始使用，优先从桌面版入口进入：
+- Tải về: [GitHub Releases](https://github.com/ExplosiveCoderflome/AI-Novel-Writing-Assistant/releases)
+- Trang phiên bản mới nhất: [Latest Release](https://github.com/ExplosiveCoderflome/AI-Novel-Writing-Assistant/releases/latest)
+- Nên ưu tiên tải bản cài đặt `Setup.exe`; nếu không muốn cài đặt, hoặc muốn chạy trực tiếp từ USB / thư mục tạm, chọn bản `portable`
+- Trang giới thiệu công khai: [GitHub Pages](https://explosivecoderflome.github.io/AI-Novel-Writing-Assistant/) cung cấp xem trước tính năng, tài liệu mô-đun và hướng dẫn sử dụng
 
-- 下载入口：[GitHub Releases](https://github.com/ExplosiveCoderflome/AI-Novel-Writing-Assistant/releases)
-- 最新版本页：[Latest Release](https://github.com/ExplosiveCoderflome/AI-Novel-Writing-Assistant/releases/latest)
-- 建议优先下载 `Setup.exe` 安装版；如果你不想安装，或者想放在 U 盘 / 临时目录里直接运行，再选择 `portable` 版本
-- 公开介绍站：[GitHub Pages 介绍站](https://explosivecoderflome.github.io/AI-Novel-Writing-Assistant/) 提供功能预览、模块文档和使用指南
+## Sáng tác dài kỳ bằng Codex: Ani Book Skill
 
-## 用 Codex 持续创作长篇：Ani Book Skill
+Nếu bạn muốn trực tiếp viết tiểu thuyết trong workspace cục bộ của Codex, có thể dùng [Ani Book Skill](https://github.com/ExplosiveCoderflome/ani-book-skill). Skill này tổ chức phán đoán hướng đi, động cơ câu chuyện, đẩy chương, hiệu đính sửa chữa và quản lý liên tục thành một quy trình sáng tác dài kỳ có thể khôi phục và truy vết.
 
-如果你希望直接在 Codex 的本地工作区推进小说，可以使用 [Ani Book Skill](https://github.com/ExplosiveCoderflome/ani-book-skill)。它将方向判断、故事发动机、章节推进、审校修复和连续性管理组织为一条可恢复、可追溯的长篇创作流程。
+Đây là một lối vào sáng tác bổ trợ cho dự án này:
 
-这是一条与本项目互补的创作入口：
+- Cần bàn làm việc sáng tác trực quan, cấu hình model, trạng thái chạy thực và quản lý tài sản tiểu thuyết: dùng repo này.
+- Muốn trong Codex dùng file cục bộ, artifact theo giai đoạn và Skill để sáng tác liên tục: qua [Ani Book Skill](https://github.com/ExplosiveCoderflome/ani-book-skill).
 
-- 需要可视化创作工作台、模型配置、运行实况与小说资产管理：使用本仓库。
-- 希望在 Codex 中通过本地文件、阶段工件和 Skill 直接持续创作：前往 [Ani Book Skill](https://github.com/ExplosiveCoderflome/ani-book-skill)。
+## Định vị dự án
 
-## 项目定位
+Nhiều công cụ viết AI cách dùng khá giống nhau: bạn nhập một prompt, nó trả một đoạn văn, không hài lòng thì thử lại. Viết truyện ngắn thì được, viết truyện dài dễ càng viết càng loãng.
 
-很多 AI 写作工具的使用方式其实差不多：你输入一句 Prompt，它回你一段正文，不满意就重试。写短篇还行，写长篇容易越写越散。
+Repo này là "hệ thống sản xuất tiểu thuyết dài theo kiểu AI đạo diễn", phán đoán sản phẩm cốt lõi:
 
-这个仓库是"AI 导演式长篇小说生产系统"，核心产品判断是：
+- Người dùng mục tiêu ưu tiên là người mới hoàn toàn chưa biết viết, không phải tác giả lão luyện am hiểu cấu trúc
+- Ưu tiên giải quyết "làm sao viết xong cả cuốn sách", rồi mới tối ưu "viết tinh xảo đến mức nào"
+- AI không chỉ là model bổ sung văn bản, mà là vai trò hệ thống tham gia lập kế hoạch, phán đoán, điều phối, thực thi và truy vết
 
-- 目标用户优先是完全不懂写作的新手，而不是熟悉结构设计的资深作者
-- 优先解决"如何把整本书写完"，再逐步优化"写得多精巧"
-- AI 不只是补全文本的模型，而是参与规划、判断、调度、执行和追踪的系统角色
+Nếu bạn đang tìm các dự án kiểu sau, repo này đáng quan tâm hơn:
 
-如果你在找下面这类项目，这个仓库会更值得关注：
+- Muốn kiểm chứng AI thực sự có thể tham gia sản xuất cả cuốn tiểu thuyết, chứ không chỉ viết từng đoạn
+- Muốn nghiên cứu AI Native Product, Agent Workflow, điều phối LangGraph ứng dụng vào nghiệp vụ sáng tác thực tế
+- Muốn nối thế giới quan, nhân vật, phân tích sách, kho tri thức, kiểm soát cách viết, sinh chương, sửa chất lượng thành một quy trình ổn định
 
-- 想验证 AI 是否真的能参与整本小说生产，而不是只写单段文案
-- 想研究 AI Native Product、Agent Workflow、LangGraph 编排怎样落到真实创作业务
-- 想把世界观、角色、拆书、知识库、写法控制、章节生成、质量修复串成一套稳定工作流
+## Hiện đã làm được gì
 
-## 现在已经能做什么
+### 1. Đạo diễn AI mở sách và bàn giao sản xuất nội dung
 
-### 1. AI 自动导演开书与正文生产交接
+- Từ một câu ý tưởng vào thẳng Đạo diễn AI, không cần viết tay thế giới quan, mạch chính, nhân vật và cương tập; hệ thống trước tiên sắp xếp thiết lập dự án, căn chỉnh framing cấp sách, rồi sinh nhiều bộ hướng đi trọn cuốn kèm nhóm tiêu đề tương ứng
+- Không hài lòng hướng đi có thể tiếp tục sinh, chỉnh sửa định hướng một bộ phương án, hoặc chỉ làm lại nhóm tiêu đề của một bộ — tránh kiểu "ưng thì xác nhận / không ưng thì làm lại cả lô"
+- Đạo diễn AI đẩy hướng cấp sách, nhân vật và kế hoạch tập/chương đến mức có thể bắt đầu viết, rồi người dùng chọn: **sáng tác đơn giản** để AI tự hoàn thành cả cuốn liên tục, **sáng tác chuyên nghiệp** vào bàn làm việc đầy đủ để kiểm tra và điều chỉnh
+- Ở chế độ toàn tự động, khi model không khả dụng, hết hạn mức, sửa chữa liên tục thất bại, yêu cầu lập lại kế hoạch... hệ thống chủ động dừng thay vì thử lại vô hạn; mọi trạng thái lưu vào nhật ký theo dõi Đạo diễn, có thể khôi phục từ checkpoint ban đầu
+- Ở chế độ toàn tự động, sau mỗi đợt chương hoàn thành sẽ tự xác nhận các nhân vật ứng viên đang chờ; nhân vật vào sổ chính thức và kích hoạt tái cấu trúc động, loại bỏ trôi dạt nhất quán nhân vật ở các chương sau
+- Chuỗi phủ: hướng cấp sách, kế hoạch tổng thể câu chuyện, thế giới cuốn sách, chuẩn bị nhân vật, chiến lược tập / khung tập, bảng nhịp, danh sách chương, chi tiết hóa chương, thực thi chương, hiệu đính, sửa chữa — mỗi giai đoạn đều hỗ trợ khôi phục từ checkpoint, tiếp quản và đổi model thử lại
 
-- 从一句灵感直接进入自动导演，无需先手写世界观、主线、角色和卷纲；系统先整理项目设定、对齐书级 framing，再生成多套整本方向和对应标题组
-- 方向不满意时可以继续生成、定向修订某一套方案、或只重做某套方案的标题组，避免"满意就确认 / 不满意就整批重来"
-- 自动导演先把书级方向、角色和卷章规划推进到可开写，再由用户选择：**简易创作**持续自动完成整本书，**专业创作**进入完整工作台检查和调整
-- 全自动驾驶模式下遇到模型不可用、配额耗尽、连续修复失败、要求重新规划等情况会主动停下，而不是无限重试；所有状态保存到导演跟进，可从原检查点恢复
-- 全自动模式下每批章节完成后自动确认 pending 候选角色，角色进入正式名册并触发动态重建，消除后续章节角色一致性漂移
-- 链路覆盖书级方向、故事宏观规划、本书世界、角色准备、卷战略 / 卷骨架、节奏板、章节清单、章节细化、章节执行、审核、修复，每一阶段都支持检查点恢复、接管和换模型重试
+### 2. Creative Hub và Agent Runtime
 
-### 2. Creative Hub 与 Agent Runtime
+- Trung tâm sáng tác thống nhất đảm nhiệm hội thoại, hỏi đáp, lập kế hoạch, gọi công cụ, trạng thái nhiệm vụ và tổng kết lượt — không còn là những nút chức năng rời rạc
+- Trong hệ thống có Planner, Tool Registry, Runtime, nút phê duyệt, thẻ trạng thái và chuỗi khôi phục khi gián đoạn rõ ràng; ý định ngôn ngữ tự nhiên được route tới giai đoạn Đạo diễn AI hoặc nhiệm vụ chương tương ứng
+- Thông báo dừng ở trình duyệt: khi đến checkpoint sẽ bật thông báo hệ thống, yên tâm treo máy cho các tác vụ chuỗi dài
 
-- 统一创作中枢承载对话、追问、规划、工具调用、任务状态和回合总结，不再是分散的功能按钮
-- 系统内有明确的 Planner、Tool Registry、Runtime、审批节点、状态卡片和中断恢复链路；自然语言意图会被路由到对应的自动导演阶段或章节任务
-- 浏览器暂停通知：到达 checkpoint 时弹出系统通知，长链路任务挂机更安心
+### 3. Chuỗi sản xuất trọn cuốn và thực thi chương
 
-### 3. 整本生产主链与章节执行
+- Runtime chương đơn, thực thi chương và pipeline hàng loạt trọn cuốn hội tụ về cùng một chuỗi chính
+- Ngữ cảnh sinh chương lọc chính xác sổ cái tài sản nhân vật theo những người tham gia của chương này, tránh nhồi toàn bộ nhân vật vào prompt; rủi ro cao đã vào sổ và đề xuất đang chờ đi theo các mã kiểm toán khác nhau, nội dung chính không viết tài nguyên đang chờ thành sự thật đã hoàn thành
+- Chuỗi thực thi chương phủ: sinh nội dung, hiệu đính AI, xử lý vấn đề sửa được, ghi nợ chất lượng, cập nhật trạng thái nhân vật / sự kiện / điềm báo, lối vào chương tiếp theo
+- Sửa rò rỉ bộ nhớ ở bộ giới hạn tốc độ LLM: khi cấu hình provider thay đổi sẽ loại bỏ bộ giới hạn cũ, bộ nhớ ổn định khi chạy lâu
 
-- 单章运行时、章节执行和整本批量 pipeline 收敛到同一条主链
-- 章节生成上下文按本章参与者精准筛选角色资源账本，避免把全部角色塞进 prompt；高风险已入账与待确认提案分别走不同审计代码，正文不会把待确认资源写成既成事实
-- 章节执行链覆盖正文生成、AI 审核、可修复问题处理、质量债务记录、角色状态 / 事实 / 伏笔回灌、下一章入口
-- LLM 限速器修复内存泄漏：provider 配置变更时淘汰旧限速器，长期运行内存稳定
+### 4. Bàn làm việc phân tích sách và tiến hóa hình tượng nhân vật
 
-### 4. 拆书工作台与角色形象演变
+- Hồ sơ nhân vật khi phân tích sách chia **tóm tắt / tiêu chuẩn / chuyên sâu / đầy đủ** bốn cấp; hồ sơ chuyên sâu và đầy đủ truy hồi đoạn gốc để bổ sung chiều dữ liệu
+- **Tiến hóa hình tượng nhân vật**: quét tăng dần các chương xuất hiện theo mức phủ 25% / 50% / 75% / 100%, lắng đọng mỏ neo ngoại hình, trang phục, trạng thái và bối cảnh của mỗi chương, đồng thời dựa trên snapshot chương tạo ảnh hình tượng theo giai đoạn của cùng một nhân vật; từ khóa ngoại hình ngắn trích xuất được đưa vào vùng chờ xác nhận, tick chọn để hợp nhất vào hồ sơ nhân vật
+- Ảnh hình tượng chương có thể tham chiếu ảnh hình tượng cơ bản của nhân vật, giữ nhất quán khuôn mặt / kiểu tóc / chi tiết nhận diện
+- Phân tích sách còn có đọc hai cột, truy hồi bằng chứng chương, phân tích định hướng theo phạm vi, bảo vệ ngân sách token, chế độ chẩn đoán bản thảo
 
-- 拆书角色档案分**简要 / 标准 / 深入 / 完整**四档，深入和完整档案会回溯原文片段补全维度
-- **角色形象演变**：按 25% / 50% / 75% / 100% 覆盖率增量扫描出场章节，沉淀每章外貌、服装、状态和场景锚点，并基于章节快照生成同一角色阶段形象图；提取的短外貌词条放入待确认区，勾选后融合到角色档案
-- 章节形象图可引用角色基础形象图，保持脸型 / 发型 / 标志细节一致
-- 拆书还提供双栏阅读、章节证据回溯、范围定向分析、token 预算守卫、稿件诊断模式
+### 5. Công cụ cách viết và quy tắc chống AI
 
-### 5. 写法引擎与反 AI 规则
+- Cách viết không còn chỉ là một đoạn mô tả trong prompt, mà là tài sản dài hạn có thể lưu, sửa, gắn kết, thử viết, tái sử dụng
+- Có thể trích đặc trưng cách viết từ văn bản hiện có + mẫu gốc; đặc trưng lắng đọng thành hồ chứa đặc trưng hiển thị được, bật / tắt / kết hợp từng mục, quy tắc tự biên dịch lại
+- Công cụ cách viết tham gia chuỗi sinh, phát hiện và sửa; quy tắc chống AI giảm cảm giác khuôn mẫu, cảm giác giải thích và biểu đạt rỗng tuếch
 
-- 写法不再只是提示词里的一段说明，而是可保存、编辑、绑定、试写、复用的长期资产
-- 可从现有文本提取写法特征 + 原文样本；特征沉淀为可见特征池，逐项启用 / 停用 / 组合，规则同步重编译
-- 写法引擎参与生成、检测和修正链路；反 AI 规则减少正文模板感、解释感和空泛表达
+### 6. Thế giới cuốn sách, nhân vật, kho tri thức liên kết + RAG
 
-### 6. 本书世界、角色、知识库联动 + RAG
+- Thế giới quan nâng cấp từ văn bản thiết lập dài dòng thành thế giới cuốn sách có thể sinh / tái sử dụng / đồng bộ; bản đồ, đồ thị thế lực đi vào ngữ cảnh chương
+- Kết quả phân tích sách và tài liệu kho tri thức qua RAG được cập nhật ngược vào lập kế hoạch, viết tiếp và sinh nội dung
+- Lập chỉ mục RAG song song streaming: concurrency Embedding và ghi Qdrant điều chỉnh được; sản phẩm phân tích sách vào chỉ mục facets để truy hồi gồm cả kết luận phân tích; hash chunk chống trùng lặp ngăn vector lặp khi tái tạo; retrieval trace backend truy vết được vì sao truy hồi trúng
 
-- 世界观从大段设定文本升级为可生成 / 复用 / 同步的本书世界；地图、势力图谱会进入章节上下文
-- 拆书结果和知识库文档通过 RAG 回灌到规划、续写和正文生成
-- RAG 索引流式并行：Embedding 与 Qdrant 写入并发可调；拆书产物入 facets 索引让召回包含拆书结论；chunk hash 去重防止重建产生重复向量；retrieval trace 后端可追踪召回为什么命中
+### 7. Xưởng phái sinh truyện tranh và phim ngắn
 
-### 7. 漫画与短剧衍生工坊
+- **Bàn làm việc truyện tranh**: nhất quán bối cảnh, tài sản hình ảnh nhân vật, kiểm soát mỏ neo hình ảnh; phân cảnh và bảng nhân vật hỗ trợ popup xác nhận khi sinh ảnh, tránh bấm nhầm tốn hạn mức
+- **Pipeline sản xuất chuyển thể phim ngắn v3**: từ nội dung tiểu thuyết phái sinh kịch bản phim ngắn và cảnh quay
+- Xưởng phái sinh chỉ mở sau khi chuỗi chính chạy thông — chúng tiêu thụ chương, nhân vật và bối cảnh đã sinh của tiểu thuyết
 
-- **漫画工作台**：场景一致性、角色视觉资产、视觉锚点控制；分镜与角色面板支持图像生成确认弹窗，避免误触消耗额度
-- **短剧改编生产管线 v3**：从小说内容衍生短剧剧本和镜头
-- 衍生工坊不在主链跑通前打开——它们消费的是小说已生成的章节、角色和场景
+### 8. Trang giới thiệu công khai và hệ thống tài liệu
 
-### 8. 公开介绍站与文档体系
+- **Trang giới thiệu** GitHub Pages (cổng 4173) hiển thị chuỗi chính, ảnh chụp sản phẩm, lối vào tài liệu và link tải
+- Trang tài liệu có tìm kiếm toàn văn cục bộ, breadcrumb, mục lục trong bài, điều hướng bài trước / sau, khối gợi ý tip / warn / checkpoint, bảng GFM
+- 33 bài tài liệu công khai: giới thiệu dự án, cài đặt và chuẩn bị, FAQ, khắc phục sự cố, lộ trình thực hành cuốn tiểu thuyết đầu tiên, sổ tay khôi phục theo giai đoạn, chuỗi sản xuất đầu cuối, toàn cảnh giai đoạn Đạo diễn AI, chuỗi thực thi chương, chuỗi truy hồi tri thức & RAG + mô tả mô-đun
+- Tài liệu mô-đun kèm ảnh chụp sản phẩm thật; tên giai đoạn Đạo diễn AI dùng tiếng Trung, bảng đối chiếu tên kỹ thuật giữ ở cuối bài toàn cảnh để nhà phát triển tra cứu
 
-- GitHub Pages **公开介绍站**（端口 4173）展示主链、产品截图、文档入口与下载链接
-- 文档站提供本地全文搜索、面包屑、文内目录、上 / 下一篇导航、tip / warn / checkpoint 提示块、GFM 表格
-- 33 篇公开文档：项目介绍、安装与准备、常见问题、故障排查、第一本小说实操路径、按阶段恢复手册、端到端生产链、自动导演阶段全景、章节执行链、知识与 RAG 召回链 + 模块说明
-- 模块文档配套真实产品截图；自动导演阶段名用中文表达，技术别名对照表保留在自动导演阶段全景文末供开发者查阅
+### 9. Route model và chạy cục bộ
 
-### 9. 模型路由与本地运行
+- Hỗ trợ OpenAI, DeepSeek, SiliconFlow, xAI... nhiều nhà cung cấp; lập kế hoạch, nội dung, hiệu đính, phân tích sách... có thể route tách theo từng nhiệm vụ
+- SQLite mặc định là đủ chạy chuỗi chính; cần truy hồi RAG mới nối Qdrant
+- Số concurrency RAG, giới hạn tốc độ... chuyển từ `.env` sang bảng cài đặt, sửa xong có hiệu lực ngay không cần khởi động lại
+- Monorepo (pnpm workspace), desktop / trang giới thiệu / server / client xây dựng độc lập
 
-- 支持 OpenAI、DeepSeek、SiliconFlow、xAI 等多提供商；规划、正文、审阅、拆书等链路可按任务拆开路由
-- 默认 SQLite 即可跑通主链；需要 RAG 检索时再接入 Qdrant
-- RAG 并发数、限速等运行时参数从 .env 迁到设置面板，改完即生效无需重启
-- Monorepo 拆分（pnpm workspace），桌面版 / 介绍站 / 服务端 / 客户端独立可构建
+## Lộ trình sử dụng điển hình
 
+1. Ở trang tạo tiểu thuyết nhập một câu ý tưởng, để AI Đạo diễn đưa ra các ứng viên hướng đi trọn cuốn.
+2. Vào `Thiết lập dự án`, chốt đề tài, điểm bán, cảm nhận độc giả mục tiêu và cam kết 30 chương đầu.
+3. Dùng `Kế hoạch tổng thể câu chuyện`, `Thế giới cuốn sách` và `Chuẩn bị nhân vật` bổ sung mạch chính trọn cuốn, ranh giới sân khấu và mạng nhân vật đến mức viết được.
+4. Vào `Chiến lược tập / khung tập` quyết định chia tập, rồi đến `Nhịp / phân chương` đưa tập hiện tại xuống danh sách chương và chi tiết hóa từng chương.
+5. Tùy nhu cầu gắn kết kết quả phân tích sách, tài liệu kho tri thức và tài sản cách viết, để nội dung về sau không chỉ dựa vào prompt một lần.
+6. Vào `Thực thi chương` viết từng chương, kiểm toán, sửa chữa; khi cần quay lại bàn làm việc tập để tái cân bằng và lập lại kế hoạch.
+7. Muốn đẩy nhanh thì khởi động tác vụ sản xuất trọn cuốn, theo dõi trạng thái, nguyên nhân lỗi và kết quả cập nhật ngược.
 
-## 典型使用路径
+## Sơ đồ hỗ trợ năng lực sinh truyện dài hiện tại
 
-1. 在小说创建页输入一句灵感，先让 AI 自动导演给出整本方向候选。
-2. 进入 `项目设定`，先把题材、卖点、目标读者感受和前 30 章承诺定下来。
-3. 用 `故事宏观规划`、`本书世界` 和 `角色准备`，把整本主线、舞台边界和角色网补到能写。
-4. 进入 `卷战略 / 卷骨架` 决定怎么分卷，再到 `节奏 / 拆章` 把当前卷落到章节列表和单章细化。
-5. 按需绑定拆书结果、知识库文档和写法资产，让后续正文不只是靠一次性提示词。
-6. 进入 `章节执行` 逐章写作、审计、修复，必要时回到卷工作台做再平衡和重规划。
-7. 想加速推进时，再启动整本生产任务，持续查看状态、失败原因和回灌结果。
+![Sơ đồ hỗ trợ năng lực sinh truyện dài](./images/流程图.svg?v=1)
 
-## 当前长篇生成能力支撑图
+- Mở sách chốt bài chịu trách nhiệm nói rõ "cuốn này muốn viết thành cái gì" trước, tránh càng viết càng loãng.
+- Tầng điều khiển trọn cuốn và tầng kế hoạch cấp tập chịu trách nhiệm tách truyện dài thành cấu trúc đẩy được, xem lại được, điều chỉnh được, thay vì viết chết một lần.
+- Nhân vật, thế giới quan, cách viết, kho tri thức và kiểm soát chất lượng cùng đỡ việc sinh từng chương, để mỗi chương vẫn nằm trong cùng một cuốn sách.
+- Mỗi khi viết xong một chương, hệ thống cập nhật ngược trạng thái mới, tiếp tục ảnh hưởng các chương sau, nhịp cấp tập và việc lập lại kế hoạch khi cần.
 
-![当前长篇生成能力支撑图](./images/流程图.svg?v=1)
-
-- 开书定盘负责先把这本书“要写成什么样”说清楚，避免后面越写越散。
-- 整本控制层和卷级规划层负责把长篇拆成可推进、可回看、可调整的结构，而不是一次性写死。
-- 角色、世界观、写法、知识库和质量控制一起托住单章生成，让每一章都尽量还在同一本书里。
-- 每写完一章，系统都会把新状态回灌回去，继续影响后续章节、卷级节奏和必要时的重规划。
-
-## 最新更新
+## Cập nhật mới nhất
 
 ### 2026-08-26
 
-- 热门题材雷达会区分库中已有与需要加入的题材和推进方式：已有内容可直接定位，缺少的方向确认后才写入资源库；从雷达开书时会预填这些创作基础，同时保留用户的手动选择。
-- 人工章节审校需要调整后续规划时，会保留正文并等待用户确认，不会在审校过程中静默重规划。
-- 审校结论、待处理问题和章节进度会一起保存为可恢复状态，刷新页面后仍能看到真实处理原因。
-- 整本自动创作会保留可用正文、记录局部质量问题并继续；质量优先可在人工分阶段创作时停在已保存边界等待确认。
-- 正文无法确认保存时不会自动重复生成；后台任务自动恢复失败时会保留恢复入口，并从未完成章节继续。
+- Radar đề tài nóng phân biệt đề tài đã có trong kho và đề tài cần bổ sung cùng cách đẩy: nội dung có sẵn định vị trực tiếp, hướng thiếu mới ghi vào kho sau khi xác nhận; mở sách từ radar sẽ điền sẵn các nền tảng sáng tác này, đồng thời giữ lựa chọn thủ công của người dùng.
+- Khi hiệu đính chương thủ công cần điều chỉnh kế hoạch sau, sẽ giữ nội dung và chờ người dùng xác nhận, không âm thầm lập lại kế hoạch giữa quá trình hiệu đính.
+- Kết luận hiệu đính, vấn đề chờ xử lý và tiến độ chương lưu chung thành trạng thái khôi phục được, refresh trang vẫn thấy nguyên nhân xử lý thật.
+- Sáng tác tự động trọn cuốn giữ nội dung dùng được, ghi vấn đề chất lượng cục bộ và tiếp tục; ưu tiên chất lượng có thể dừng ở ranh giới đã lưu khi sáng tác thủ công theo giai đoạn, chờ xác nhận.
+- Nội dung không xác nhận lưu được thì không tự động sinh lặp; khi tác vụ nền tự khôi phục thất bại sẽ giữ lối vào khôi phục và tiếp tục từ chương chưa xong.
 
-完整历史更新见 [docs/releases/release-notes.md](./docs/releases/release-notes.md)。
+Toàn bộ lịch sử cập nhật xem [docs/releases/release-notes.md](./docs/releases/release-notes.md).
 
-## 功能预览
-### 功能概览中的95%以上编写都是AI完成
+## Xem trước tính năng
 
-下面这组截图优先展示当前版本正在使用的单书工作流：从自动导演开书，到项目设定、故事宏观规划、角色准备、卷战略、节奏拆章、章节执行，再到质量修复，已经开始收成一条连续推进链，而不是一组彼此割裂的演示页。
+### Trên 95% nội dung trong phần tổng quan tính năng do AI viết
 
-### 提示词编辑器
+Bộ ảnh chụp dưới đây ưu tiên trình bày quy trình một cuốn sách đang được dùng ở phiên bản hiện tại: từ Đạo diễn AI mở sách, đến thiết lập dự án, kế hoạch tổng thể câu chuyện, chuẩn bị nhân vật, chiến lược tập, nhịp phân chương, thực thi chương, rồi sửa chất lượng — đã thu thành một chuỗi đẩy liên tục, không phải một nhóm trang demo rời rạc.
 
-提示词编辑器用于调试和维护产品级 AI 任务的提示词资产。正文生成提示词支持本书范围的高级模板编辑，可以用可视化引用标签插入书级合约、章节任务、角色事实、时间线、运行变量和槽位规则，并通过预览检查最终 messages 与上下文注入结果；需要验证效果时，也可以选择模型直接测试当前草稿产出。
+### Trình biên tập prompt
 
-![提示词编辑器](./images/ScreenShot_2026-07-08_140153_328.png)
+Trình biên tập prompt dùng để debug và bảo trì tài sản prompt của các tác vụ AI cấp sản phẩm. Prompt sinh nội dung hỗ trợ chỉnh sửa template nâng cao trong phạm vi cuốn sách, có thể dùng thẻ tham chiếu trực quan để chèn hợp đồng cấp sách, nhiệm vụ chương, sự kiện nhân vật, dòng thời gian, biến runtime và quy tắc slot, đồng thời xem trước kiểm tra messages cuối và kết quả tiêm ngữ cảnh; khi cần kiểm chứng hiệu quả cũng có thể chọn model để test trực tiếp bản nháp hiện tại.
+
+![Trình biên tập prompt](./images/ScreenShot_2026-07-08_140153_328.png)
 
 ### Creative Hub
 
-统一承载对话、规划、工具执行和创作推进的创作中枢。
+Trung tâm sáng tác thống nhất đảm nhiệm hội thoại, lập kế hoạch, thực thi công cụ và đẩy tiến độ sáng tác.
 
-![创作中枢](./images/创作中枢.png)
+![Trung tâm sáng tác](./images/创作中枢.png)
 
-### 首页创作续写台
+### Bàn tiếp tục viết ở trang chủ
 
-首页会围绕当前小说、真实进度和推荐下一步组织续写入口，让第一次使用也能快速找到现在该做什么。
+Trang chủ tổ chức lối vào viết tiếp quanh cuốn tiểu thuyết hiện tại, tiến độ thật và bước tiếp theo được gợi ý, để người dùng lần đầu cũng nhanh chóng biết bây giờ nên làm gì.
 
-![首页创作续写台](./images/v2/微信截图_20260813215131.png)
+![Bàn tiếp tục viết trang chủ](./images/v2/微信截图_20260813215131.png)
 
-### 自动导演模式
+### Chế độ Đạo diễn AI
 
-自动导演创建页现在会把一句灵感、导演起始参数、书级 framing、模型设置和运行方式收进同一面板；进入方向选择后，不只是给你两套整本方案，还会配套书名组选项、推荐理由和定向重做入口，适合先把这本书“该怎么开”定下来。
+Trang tạo Đạo diễn AI gom một câu ý tưởng, tham số khởi đầu đạo diễn, framing cấp sách, cài đặt model và cách chạy vào cùng một bảng; sau khi vào chọn hướng, không chỉ đưa hai bộ phương án trọn cuốn mà còn kèm nhóm tùy chọn tên sách, lý do gợi ý và lối vào làm lại định hướng — phù hợp để chốt "cuốn này nên mở kiểu gì".
 
-![自动导演创建](./images/导演模式-创建.png)
+![Tạo Đạo diễn AI](./images/导演模式-创建.png)
 
-![自动导演选择方向](./images/导演模式-选择方向.png)
+![Đạo diễn AI chọn hướng](./images/导演模式-选择方向.png)
 
-![自动导演执行中](./images/导演模式-创建中.png)
+![Đạo diễn AI đang chạy](./images/导演模式-创建中.png)
 
-![自动导演交接与继续执行](./images/导演模式-编辑.png)
+![Đạo diễn AI bàn giao và tiếp tục](./images/导演模式-编辑.png)
 
-### 项目设定
+### Thiết lập dự án
 
-项目设定已经挂到单书工作台的连续流程里：左侧能直接看到当前步骤与整体进度，上方能看到 AI 接管状态，正文区则集中处理标题、简介、书级 framing、写法确认和本书真正会用到的世界边界。
+Thiết lập dự án đã gắn vào quy trình liên tục của bàn làm việc một cuốn: bên trái thấy trực tiếp bước hiện tại và tiến độ tổng thể, phía trên thấy trạng thái AI tiếp quản, vùng nội dung tập trung xử lý tiêu đề, giới thiệu, framing cấp sách, xác nhận cách viết và ranh giới thế giới cuốn sách thực sự dùng.
 
-![项目设定](./images/write/项目设定.png)
+![Thiết lập dự án](./images/write/项目设定.png)
 
-### 故事宏观规划
+### Kế hoạch tổng thể câu chuyện
 
-故事宏观规划不再只是大段摘要，而是先把故事引擎、推进与兑现摘要、长期对立和前 30 章承诺压成后续可继承的书级引导层，先保证整本主线能推，再把卷级和章节级规划建在这套底盘上。
+Kế hoạch tổng thể câu chuyện không còn chỉ là bản tóm tắt dài, mà trước tiên nén động cơ câu chuyện, tóm tắt đẩy & hiện thực hóa, đối lập dài hạn và cam kết 30 chương đầu thành tầng dẫn dắt cấp sách kế thừa được, đảm bảo mạch chính trọn cuốn đẩy được, rồi mới xây kế hoạch cấp tập và cấp chương trên nền này.
 
-![故事宏观规划](./images/write/故事宏观规划.png)
+![Kế hoạch tổng thể câu chuyện](./images/write/故事宏观规划.png)
 
-### 角色准备
+### Chuẩn bị nhân vật
 
-角色准备页现在更像角色工作台而不是角色表单：会先盘点目标区段的核心角色，再给出 AI 阵容方案、结构关系网和动态角色系统，减少开书后角色断档、功能位缺失和关系推进失速。
+Trang chuẩn bị nhân vật giờ giống bàn làm việc nhân vật hơn là form nhân vật: trước tiên rà soát nhân vật chủ chốt của đoạn mục tiêu, rồi đưa phương án đội hình AI, mạng quan hệ cấu trúc và hệ nhân vật động, giảm tình trạng đứt đoạn nhân vật sau khi mở sách, thiếu vị trí chức năng và trì trệ đẩy quan hệ.
 
-![角色准备](./images/write/角色准备.png)
+![Chuẩn bị nhân vật](./images/write/角色准备.png)
 
-### 卷战略 / 卷骨架
+### Chiến lược tập / khung tập
 
-卷战略阶段已经开始显式区分“卷战略、卷骨架、节奏板、拆章节”四个阶段完成度。系统会先判断当前是不是已经具备继续推进条件，再生成卷战略建议、审查卷骨架，并把版本控制与影响分析收进同一页。
+Giai đoạn chiến lược tập bắt đầu phân biệt rõ mức hoàn thành của bốn giai đoạn "chiến lược tập, khung tập, bảng nhịp, phân chương". Hệ thống trước tiên phán đoán hiện tại đã đủ điều kiện đẩy tiếp chưa, rồi sinh gợi ý chiến lược tập, xét duyệt khung tập, và gom kiểm soát phiên bản với phân tích ảnh hưởng vào cùng một trang.
 
-![卷战略 / 卷骨架](./images/write/卷战略.png)
+![Chiến lược tập / khung tập](./images/write/卷战略.png)
 
-### 节奏 / 拆章
+### Nhịp / phân chương
 
-节奏 / 拆章现在把节奏段列表、批量细化、单章标题、摘要、章节目标和任务单放进同一工作区；可以按当前可见章节或指定范围连续细化，也可以对摘要和目标做局部 AI 修正，更适合连载网文式的持续推进。
+Nhịp / phân chương giờ đưa danh sách đoạn nhịp, chi tiết hóa hàng loạt, tiêu đề chương, tóm tắt, mục tiêu chương và phiếu nhiệm vụ vào cùng một khu làm việc; có thể chi tiết hóa liên tục theo chương đang thấy hoặc phạm vi chỉ định, cũng có thể sửa cục bộ bằng AI với tóm tắt và mục tiêu — phù hợp đẩy liên tục kiểu truyện đăng nhiều kỳ.
 
-![节奏 / 拆章](./images/write/节奏拆章.png)
+![Nhịp / phân chương](./images/write/节奏拆章.png)
 
-### 章节执行
+### Thực thi chương
 
-章节执行页现在更像主写作工作台：左侧是章节卡片与下一步状态，中间是已保存正文和版本区，右侧则把执行计划、正文写作、审核、修复、状态同步和伏笔回填收在同一套动作面板里，适合逐章推进。
+Trang thực thi chương giờ giống bàn làm việc viết chính: bên trái là thẻ chương và trạng thái bước tiếp theo, giữa là nội dung đã lưu và vùng phiên bản, bên phải gom kế hoạch thực thi, viết nội dung, hiệu đính, sửa chữa, đồng bộ trạng thái và điềm báo vào cùng một bộ bảng hành động — phù hợp đẩy từng chương.
 
-![章节执行](./images/write/章节执行.png)
+![Thực thi chương](./images/write/章节执行.png)
 
-### 质量修复
+### Sửa chất lượng
 
-质量修复已经从零散按钮收成独立工作台：可以围绕当前章节执行审核、执行修复、生成钩子，并结合当前批次、质量阈值和 AI 输出继续往后处理，适合把“写完之后怎么稳住质量”也纳入主流程。
+Sửa chất lượng đã từ những nút rời rạc thu thành bàn làm việc độc lập: có thể quanh chương hiện tại thực thi hiệu đính, thực thi sửa, sinh hook, kết hợp lô hiện tại, ngưỡng chất lượng và đầu ra AI để xử lý tiếp — phù hợp đưa "sau khi viết xong thì giữ chất lượng thế nào" vào quy trình chính.
 
-![质量修复](./images/write/质量修复.png)
+![Sửa chất lượng](./images/write/质量修复.png)
 
-### 正文修改
+### Sửa nội dung
 
-当一章已经写出正文后，还可以进入独立正文编辑器继续局部改写。正文修改页会把任务单、审计结果和修复链路继续挂在这章身上，避免用户在“主写作区”和“精修区”之间断掉上下文。
+Khi một chương đã có nội dung, có thể vào trình biên tập nội dung độc lập để viết lại từng phần. Trang sửa nội dung giữ phiếu nhiệm vụ, kết quả kiểm toán và chuỗi sửa chữa gắn với chương này, tránh người dùng đứt ngữ cảnh giữa "khu viết chính" và "khu tinh chỉnh".
 
-![正文修改](./images/正文修改.jpeg)
+![Sửa nội dung](./images/正文修改.jpeg)
 
-### 小说列表
+### Danh sách tiểu thuyết
 
-从这里进入开书、管理、编辑和整本生产。
+Từ đây vào mở sách, quản lý, chỉnh sửa và sản xuất trọn cuốn.
 
-![小说列表](./images/v2/微信截图_20260813220328.png)
+![Danh sách tiểu thuyết](./images/v2/微信截图_20260813220328.png)
 
-### 拆书分析
+### Phân tích sách
 
-拆书分析已经不只是生成一篇读后感：可选快速 / 标准 / 完整三档拆书，覆盖题材定位、剧情结构、人物系统、世界设定和写法技法；角色档案支持简要 / 标准 / 深入 / 完整四档深度，还能按 25% / 50% / 75% / 100% 覆盖率对角色做形象演变的增量扫描，生成跨章节一致的参考图。拆书结论可以直接发布到知识库、一键转成写法资产，或把角色升格进基础角色库，让“拆一本书”变成后续创作能反复调用的长期资产，而不是看完就忘的一次性笔记。
+Phân tích sách không còn chỉ sinh một bài cảm nhận: tùy chọn ba cấp phân tích nhanh / tiêu chuẩn / đầy đủ, phủ định vị đề tài, cấu trúc cốt truyện, hệ nhân vật, thiết lập thế giới và kỹ thuật cách viết; hồ sơ nhân vật hỗ trợ bốn cấp độ sâu tóm tắt / tiêu chuẩn / chuyên sâu / đầy đủ, còn có thể quét tăng dần tiến hóa hình tượng theo mức phủ 25% / 50% / 75% / 100%, sinh ảnh tham chiếu nhất quán xuyên chương. Kết luận phân tích sách có thể xuất thẳng vào kho tri thức, một chạm chuyển thành tài sản cách viết, hoặc thăng cấp nhân vật vào thư viện nhân vật cơ bản — biến "phân tích một cuốn sách" thành tài sản dài hạn gọi lại được trong sáng tác sau, thay vì ghi chú một lần xem xong quên.
 
-![拆书分析](./images/v2/微信截图_20260813220038.png)
+![Phân tích sách](./images/v2/微信截图_20260813220038.png)
 
-拆书结果页会把作品结构、人物和创作经验整理成可复用的分析资产。
+Trang kết quả phân tích sách sắp xếp cấu trúc tác phẩm, nhân vật và kinh nghiệm sáng tác thành tài sản phân tích tái sử dụng được.
 
-### 知识库
+### Kho tri thức
 
-统一管理文档、索引、重建任务和检索能力。
+Quản lý thống nhất tài liệu, chỉ mục, tác vụ tái tạo và năng lực truy hồi.
 
-![知识库](./images/知识库.png)
+![Kho tri thức](./images/知识库.png)
 
-### 世界观
+### Thế giới quan
 
-世界观不再只是描述文本，而是能生成世界骨架、维护世界手册，并绑定为每本小说自己的本书世界上下文。
+Thế giới quan không còn chỉ là văn bản mô tả, mà có thể sinh khung thế giới, bảo trì sổ tay thế giới và gắn làm ngữ cảnh thế giới cuốn sách riêng của từng tiểu thuyết.
 
-![世界样本库](./images/v2/微信截图_20260813220219.png)
-![世界手册与可视化](./images/v2/微信截图_20260813220255.png)
+![Thư viện mẫu thế giới](./images/v2/微信截图_20260813220219.png)
+![Sổ tay thế giới và trực quan hóa](./images/v2/微信截图_20260813220255.png)
 
-### 角色库
+### Thư viện nhân vật
 
-统一维护角色基础档案与小说内角色信息。
+Duy trì thống nhất hồ sơ nhân vật cơ bản và thông tin nhân vật trong tiểu thuyết.
 
-![角色库](./images/角色库.png)
+![Thư viện nhân vật](./images/角色库.png)
 
-### 类型管理
+### Quản lý thể loại
 
-集中维护题材与类型资产，让故事规划、角色准备和正文生成共享同一套题材语言。
+Tập trung bảo trì tài sản đề tài và thể loại, để lập kế hoạch câu chuyện, chuẩn bị nhân vật và sinh nội dung dùng chung một hệ ngôn ngữ đề tài.
 
-![题材基底库](./images/v2/微信截图_20260813220110.png)
+![Thư viện nền tảng đề tài](./images/v2/微信截图_20260813220110.png)
 
-### 流派管理
+### Quản lý trường phái
 
-把推进模式、兑现方式和冲突边界收成可复用的流派模式资产，让整本书更容易保持读者预期。
+Thu mô hình đẩy truyện, cách hiện thực hóa và ranh giới xung đột thành tài sản trường phái tái sử dụng được, giúp cả cuốn sách dễ giữ đúng kỳ vọng độc giả.
 
-![推进模式库](./images/v2/微信截图_20260813220114.png)
+![Thư viện mô hình đẩy truyện](./images/v2/微信截图_20260813220114.png)
 
-### 标题工坊
+### Xưởng tiêu đề
 
-批量生成、筛选和微调书名与标题方向，降低新手在开书命名阶段的试错成本。
+Sinh hàng loạt, lọc và tinh chỉnh tiêu đề sách cùng hướng tên, giảm chi phí thử sai ở giai đoạn đặt tên cho người mới.
 
-![标题工坊](./images/v2/微信截图_20260813220147.png)
+![Xưởng tiêu đề](./images/v2/微信截图_20260813220147.png)
 
-### 写法引擎与反 AI 规则
+### Công cụ cách viết và quy tắc chống AI
 
-统一管理写法资产、风格约束和反 AI 规则，让正文更像作品本身，而不是模板式补全文本。
+Quản lý thống nhất tài sản cách viết, ràng buộc phong cách và quy tắc chống AI, để nội dung giống tác phẩm hơn, không phải văn bản bổ sung theo khuôn mẫu.
 
-![写法引擎](./images/v2/微信截图_20260813220303.png)
-![反 AI 规则](./images/v2/微信截图_20260813220310.png)
+![Công cụ cách viết](./images/v2/微信截图_20260813220303.png)
+![Quy tắc chống AI](./images/v2/微信截图_20260813220310.png)
 
-### 任务中心
+### Trung tâm nhiệm vụ
 
-查看拆书、知识库重建和其他后台任务的排队、执行与失败状态。
+Xem trạng thái xếp hàng, thực thi và thất bại của phân tích sách, tái tạo kho tri thức và các tác vụ nền khác.
 
-![任务中心](./images/任务中心.png)
+![Trung tâm nhiệm vụ](./images/任务中心.png)
 
-### 模型配置
+### Cấu hình model
 
-为不同能力配置不同模型，减少一套模型硬吃所有任务的成本。
+Cấu hình model khác nhau cho từng năng lực, giảm chi phí một bộ model chịu hết mọi tác vụ.
 
-![模型配置](./images/模型配置.png)
+![Cấu hình model](./images/模型配置.png)
 
-## 快速开始
+## Bắt đầu nhanh
 
-### 环境要求
+### Yêu cầu môi trường
 
 - Node.js `^20.19.0 || ^22.12.0 || >=24.0.0`
-  推荐直接使用 `20.19.x LTS`
+  Khuyến nghị dùng `20.19.x LTS`
 - pnpm `>= 10.6`
-  推荐直接使用仓库声明的 `pnpm@10.6.0`
-- 至少一组可用的 LLM API Key
-  也可以先把项目跑起来，再在页面里配置
-- 如果你要完整体验知识库 / RAG，再额外准备可用的 Qdrant
+  Khuyến nghị dùng `pnpm@10.6.0` như repo khai báo
+- Ít nhất một bộ LLM API Key dùng được
+  Cũng có thể chạy dự án trước, rồi cấu hình trong trang
+- Nếu muốn trải nghiệm đầy đủ kho tri thức / RAG, chuẩn bị thêm Qdrant dùng được
 
-### 1. 安装依赖
+### 1. Cài đặt phụ thuộc
 
 ```bash
 pnpm install
 ```
 
-默认的 `pnpm install` 现在只准备 Web / Server 开发所需依赖，不会在首次安装时强制下载 Electron 桌面运行时。
+`pnpm install` mặc định giờ chỉ chuẩn bị phụ thuộc phát triển Web / Server, không ép tải runtime Electron desktop ở lần cài đầu.
 
-- 如果你只是运行现有 Web / Server 开发流，到这里就够了
-- 如果你要启动桌面端开发壳，首次运行 `pnpm dev:desktop` 时会自动补拉 Electron 运行时
-- 如果你想提前完成这一步，也可以手动执行：
+- Nếu chỉ chạy luồng phát triển Web / Server hiện có, đến đây là đủ
+- Nếu muốn khởi động shell phát triển desktop, lần đầu chạy `pnpm dev:desktop` sẽ tự kéo runtime Electron
+- Muốn làm sớm bước này cũng có thể chạy thủ công:
 
 ```bash
 pnpm run prepare:desktop-runtime
 ```
 
-桌面端运行时首次下载需要可访问 Electron 分发源的网络环境；如果你所在网络无法访问 GitHub Releases，建议先配置代理或镜像后再执行桌面端命令。
+Lần đầu tải runtime desktop cần môi trường mạng truy cập được nguồn phân phối Electron; nếu mạng của bạn không vào được GitHub Releases, nên cấu hình proxy hoặc mirror trước khi chạy lệnh desktop.
 
-如果你在 Windows 上执行 `pnpm install` 时卡在 `prisma preinstall`，通常先检查这两类问题：
+Nếu trên Windows chạy `pnpm install` kẹt ở `prisma preinstall`, thường kiểm tra hai loại vấn đề:
 
-1. Node 版本过低
-   Prisma 7 目前要求 Node `^20.19.0 || ^22.12.0 || >=24.0.0`。如果你还在 `20.0 ~ 20.18`，建议先升级到 `20.19.x LTS` 再安装。
-2. `script-shell` 被配置成了交互式 shell
-   如果全局 `npm/pnpm script-shell` 被设成了 `cmd.exe /k` 之类会保留提示符的形式，Prisma 的 lifecycle script 可能不会自动退出，看起来就像安装“卡死”在：
+1. Phiên bản Node quá thấp
+   Prisma 7 hiện yêu cầu Node `^20.19.0 || ^22.12.0 || >=24.0.0`. Nếu bạn đang ở `20.0 ~ 20.18`, nên nâng lên `20.19.x LTS` rồi cài lại.
+2. `script-shell` bị cấu hình thành shell tương tác
+   Nếu `npm/pnpm script-shell` toàn cục bị đặt dạng `cmd.exe /k` giữ lại dấu nhắc, lifecycle script của Prisma có thể không tự thoát, trông như cài "kẹt" ở:
    `node_modules/.../prisma>`
 
-可以先运行下面几条命令自查：
+Có thể chạy mấy lệnh sau để tự kiểm tra:
 
 ```bash
 node -v
@@ -356,30 +359,30 @@ pnpm config get script-shell
 npm config get script-shell
 ```
 
-如果 `script-shell` 返回的是带 `/k` 的 `cmd.exe`，建议删除这项配置后重新打开终端：
+Nếu `script-shell` trả về `cmd.exe` có `/k`, nên xóa cấu hình này rồi mở lại terminal:
 
 ```bash
 npm config delete script-shell
 pnpm config delete script-shell
 ```
 
-然后重新执行：
+Rồi chạy lại:
 
 ```bash
 pnpm install
 ```
 
-### 2. 配置环境变量
+### 2. Cấu hình biến môi trường
 
-这个仓库通过 pnpm workspace 分别启动前后端，所以环境变量也是按子包读取的：
+Repo này dùng pnpm workspace khởi động riêng frontend/backend, nên biến môi trường cũng đọc theo từng sub-package:
 
-- 服务端运行在 `server/` 工作目录，默认读取 `server/.env`
-- 前端运行在 `client/` 工作目录，默认读取 `client/.env` / `client/.env.local`
-- 根目录 `.env.example` 目前更适合当“总览参考”，不是 `pnpm dev` 默认读取的主入口
+- Server chạy trong thư mục làm việc `server/`, mặc định đọc `server/.env`
+- Frontend chạy trong thư mục làm việc `client/`, mặc định đọc `client/.env` / `client/.env.local`
+- `.env.example` ở gốc phù hợp làm "tham khảo tổng quan", không phải lối vào chính mà `pnpm dev` đọc mặc định
 
-#### 2.1 服务端环境变量
+#### 2.1 Biến môi trường server
 
-先复制服务端示例文件：
+Đầu tiên copy file mẫu của server:
 
 ```bash
 # macOS / Linux
@@ -389,46 +392,46 @@ cp server/.env.example server/.env
 Copy-Item server/.env.example server/.env
 ```
 
-最少建议先确认这些项目：
+Tối thiểu nên xác nhận các mục sau:
 
 - `DATABASE_URL`
-  默认就是本地 SQLite，可直接使用
+  Mặc định là SQLite cục bộ, dùng trực tiếp được
 - `RAG_ENABLED`
-  如果你暂时不接知识库，建议先设为 `false`
+  Nếu tạm thời chưa nối kho tri thức, nên đặt `false`
 - `QDRANT_URL`、`QDRANT_API_KEY`
-  只有要启用 Qdrant / RAG 时才需要
+  Chỉ cần khi bật Qdrant / RAG
 
-注意：
+Lưu ý:
 
-- `OPENAI_API_KEY`、`DEEPSEEK_API_KEY`、`SILICONFLOW_API_KEY` 这类变量可以先留空
-- 项目启动后，也可以在页面中配置模型供应商和默认模型
+- Các biến `OPENAI_API_KEY`、`DEEPSEEK_API_KEY`、`SILICONFLOW_API_KEY` có thể để trống
+- Sau khi dự án khởi động, cũng có thể cấu hình nhà cung cấp model và model mặc định trong trang
 
-#### 2.2 前端环境变量
+#### 2.2 Biến môi trường frontend
 
-大多数本地开发场景，其实不需要单独创建前端 env。
+Đa số tình huống phát triển cục bộ không cần tạo riêng env cho frontend.
 
-因为前端开发模式下默认会把 API 指到：
+Vì ở chế độ phát triển, frontend mặc định trỏ API tới:
 
 ```text
-http(s)://当前页面 hostname:3000/api
+http(s)://hostname của trang hiện tại:3000/api
 ```
 
-这也包括“同一台机器启动服务，然后用局域网 IP 在别的设备上访问”的场景。
-例如页面开在 `http://192.168.0.37:5173`，前端默认会自动把 API 指到：
+Bao gồm cả tình huống "cùng máy khởi động server, rồi dùng IP mạng LAN truy cập từ thiết bị khác".
+Ví dụ trang mở ở `http://192.168.0.37:5173`, frontend mặc định tự trỏ API tới:
 
 ```text
 http://192.168.0.37:3000/api
 ```
 
-只有在这些场景下，才建议创建 `client/.env`：
+Chỉ trong các tình huống sau mới nên tạo `client/.env`:
 
-- 前端和后端不在同一台机器
-- 你想把前端显式指向别的 API 地址
-- 你需要固定 `VITE_API_BASE_URL`
+- Frontend và backend không cùng một máy
+- Muốn trỏ frontend tới địa chỉ API khác một cách tường minh
+- Cần cố định `VITE_API_BASE_URL`
 
-如果你已经复制了 `client/.env.example`，又发现浏览器请求都跑到了 `http://localhost:3000/api`，通常就是因为你把 API 显式固定死了。对同机 / 局域网访问，建议直接删除或注释掉 `VITE_API_BASE_URL`。
+Nếu bạn đã copy `client/.env.example` mà phát hiện mọi request trình duyệt đều chạy tới `http://localhost:3000/api`, thường là vì bạn đã cố định cứng API. Với truy cập cùng máy / mạng LAN, nên xóa hoặc comment dòng `VITE_API_BASE_URL`.
 
-示例：
+Ví dụ:
 
 ```bash
 # macOS / Linux
@@ -438,112 +441,112 @@ cp client/.env.example client/.env
 Copy-Item client/.env.example client/.env
 ```
 
-内容通常只需要：
+Nội dung thường chỉ cần:
 
 ```env
-# 同机 / 局域网访问时，通常不需要这一行
+# Truy cập cùng máy / mạng LAN thường không cần dòng này
 # VITE_API_BASE_URL=http://localhost:3000/api
 ```
 
-#### 2.3 模型供应商并不一定要写死在 env
+#### 2.3 Nhà cung cấp model không nhất thiết phải viết chết trong env
 
-当前项目已经支持在页面里配置模型相关设置：
+Dự án hiện tại đã hỗ trợ cấu hình các thiết lập liên quan model ngay trong trang:
 
 - `/settings`
-  配置供应商 API Key、默认模型、连通性测试
+  Cấu hình API Key nhà cung cấp, model mặc định, test kết nối
 - `/settings/model-routes`
-  给不同任务分配不同 provider / model
+  Gán provider / model khác nhau cho từng nhiệm vụ
 - `/knowledge?tab=settings`
-  配置 Embedding provider、Embedding model、集合命名和自动重建策略
+  Cấu hình Embedding provider, Embedding model, đặt tên collection và chiến lược tự tái tạo
 
-所以环境变量里的 `OPENAI_MODEL`、`DEEPSEEK_MODEL`、`EMBEDDING_MODEL` 等，更适合当作：
+Nên các biến `OPENAI_MODEL`、`DEEPSEEK_MODEL`、`EMBEDDING_MODEL` trong env phù hợp dùng làm:
 
-- 启动默认值
-- 数据库里还没保存设置时的回退值
+- Giá trị mặc định khi khởi động
+- Giá trị fallback khi database chưa lưu thiết lập
 
-### 3. 启动开发环境
+### 3. Khởi động môi trường phát triển
 
 ```bash
 pnpm dev
 ```
 
-如果你已经复制好了 `server/.env` 和 `client/.env`，默认就是直接运行这一条。
-不需要在首次启动前手动再执行 `prisma generate`、`prisma db push` 或 `pnpm db:migrate`。
+Nếu bạn đã copy xong `server/.env` và `client/.env`, mặc định chạy đúng một lệnh này.
+Không cần thủ công chạy `prisma generate`、`prisma db push` hoặc `pnpm db:migrate` trước lần khởi động đầu.
 
-默认情况下：
+Mặc định:
 
-- 前端：`http://localhost:5173`
-- 后端：`http://localhost:3000`
-- API：`http://localhost:3000/api`
+- Frontend: `http://localhost:5173`
+- Backend: `http://localhost:3000`
+- API: `http://localhost:3000/api`
 
-首次启动服务端时，会自动执行 Prisma generate 和 `db push`。
-只有在你自己修改了 Prisma schema，或者要处理正式迁移流程时，才需要手动使用 Prisma / 数据库相关命令。
+Lần đầu khởi động server sẽ tự chạy Prisma generate và `db push`.
+Chỉ khi bạn tự sửa Prisma schema, hoặc cần xử lý quy trình migration chính thức, mới cần thủ công dùng lệnh Prisma / database.
 
-建议第一次启动后先做这几步：
+Sau lần khởi động đầu, nên làm mấy bước:
 
-1. 打开 `http://localhost:5173/settings`，至少配置一组可用的模型供应商 API Key
-2. 打开 `http://localhost:5173/settings/model-routes`，检查各任务实际使用的模型路由
-3. 如果要启用知识库，打开 `http://localhost:5173/knowledge?tab=settings`，保存 Embedding / Collection 设置
+1. Mở `http://localhost:5173/settings`, cấu hình ít nhất một bộ API Key model dùng được
+2. Mở `http://localhost:5173/settings/model-routes`, kiểm tra route model thực tế của từng nhiệm vụ
+3. Muốn bật kho tri thức thì mở `http://localhost:5173/knowledge?tab=settings`, lưu thiết lập Embedding / Collection
 
-### 4. 如果你使用 Qdrant Cloud
+### 4. Nếu dùng Qdrant Cloud
 
-如果你只是先体验主流程，其实可以先跳过 Qdrant，直接在 `server/.env` 里设：
+Nếu chỉ muốn trải nghiệm quy trình chính, có thể bỏ qua Qdrant, đặt thẳng trong `server/.env`:
 
 ```env
 RAG_ENABLED=false
 ```
 
-如果你要启用 Qdrant Cloud，可以按下面的最小流程来：
+Muốn bật Qdrant Cloud, làm theo quy trình tối thiểu:
 
-1. 到 [Qdrant Cloud](https://cloud.qdrant.io/) 注册账号。
-2. 在 `Clusters` 页面创建一个集群。
-   测试阶段用 Free cluster 就够了。
-3. 集群创建完成后，到集群详情页复制 Cluster URL。
-4. 在集群详情页的 `API Keys` 中创建并复制一个 Database API Key。
-   这个 key 创建后通常只展示一次，建议立即保存。
-5. 把它们写入 `server/.env`：
+1. Đăng ký tài khoản tại [Qdrant Cloud](https://cloud.qdrant.io/).
+2. Tạo một cluster ở trang `Clusters`.
+   Giai đoạn test dùng Free cluster là đủ.
+3. Sau khi tạo cluster xong, vào trang chi tiết cluster copy Cluster URL.
+4. Trong `API Keys` của trang chi tiết cluster, tạo và copy một Database API Key.
+   Key này thường chỉ hiển thị một lần sau khi tạo, nên lưu ngay.
+5. Ghi chúng vào `server/.env`:
 
 ```env
 QDRANT_URL=https://your-cluster.region.cloud.qdrant.io:6333
 QDRANT_API_KEY=your_database_api_key
 ```
 
-6. 启动项目后，再去 `知识库 -> 向量设置` 页面选择 Embedding provider / model，并保存集合设置。
+6. Sau khi khởi động dự án, vào trang `Kho tri thức -> Cài đặt vector` chọn Embedding provider / model, và lưu thiết lập collection.
 
-对这个项目来说，`QDRANT_URL` 建议直接填 REST 地址，也就是带 `:6333` 的地址。
+Với dự án này, `QDRANT_URL` nên điền địa chỉ REST, tức địa chỉ có `:6333`.
 
-如果你想手动验证连通性，可以用：
+Muốn thủ công kiểm tra kết nối, dùng:
 
 ```bash
 curl -X GET "https://your-cluster.region.cloud.qdrant.io:6333" \
   --header "api-key: your_database_api_key"
 ```
 
-你也可以把集群地址后面拼上 `:6333/dashboard` 打开 Qdrant Web UI。
+Cũng có thể nối thêm `:6333/dashboard` vào địa chỉ cluster để mở Qdrant Web UI.
 
-Qdrant 官方文档：
+Tài liệu chính thức Qdrant:
 
 - [Create a Cluster](https://qdrant.tech/documentation/cloud/create-cluster/)
 - [Database Authentication in Qdrant Managed Cloud](https://qdrant.tech/documentation/cloud/authentication/)
 - [Cloud Quickstart](https://qdrant.tech/documentation/cloud/quickstart-cloud/)
 
-### 5. 可选初始化
+### 5. Khởi tạo tùy chọn
 
-下面这些都不是首次启动 `pnpm dev` 的前置步骤：
+Những lệnh sau đều không phải bước tiền đề cho lần đầu chạy `pnpm dev`:
 
 ```bash
 pnpm db:seed
 pnpm db:studio
 ```
 
-## 常用命令
+## Lệnh thường dùng
 
 ```bash
 pnpm dev
 pnpm build
 pnpm typecheck
 pnpm lint
-# 仅在你开发/调整 Prisma schema 时再手动使用
+# Chỉ dùng thủ công khi bạn phát triển/điều chỉnh Prisma schema
 pnpm db:migrate
 pnpm db:seed
 pnpm db:studio
@@ -552,108 +555,110 @@ pnpm --filter @ai-novel/server test:routes
 pnpm --filter @ai-novel/server test:book-analysis
 ```
 
-## 技术栈与架构
+## Công nghệ và kiến trúc
 
-### 技术栈
+### Công nghệ
 
-| 层级 | 技术 |
+| Tầng | Công nghệ |
 | --- | --- |
-| 前端 | React 19、Vite、React Router、TanStack Query、Plate |
-| 后端 | Express 5、Prisma、Zod |
-| AI 编排 | LangChain、LangGraph |
-| 数据库 | SQLite |
+| Frontend | React 19、Vite、React Router、TanStack Query、Plate |
+| Backend | Express 5、Prisma、Zod |
+| Điều phối AI | LangChain、LangGraph |
+| Database | SQLite |
 | RAG | Qdrant |
-| 工程形态 | pnpm workspace Monorepo |
+| Hình thái | pnpm workspace Monorepo |
 
-### Monorepo 结构
+### Cấu trúc Monorepo
 
 ```text
-client/   React + Vite 前端
+client/   Frontend React + Vite
 server/   Express + Prisma + Agent Runtime + Creative Hub
-shared/   前后端共享类型与协议
-images/   README 与产品预览截图
-scripts/  启动和辅助脚本
-docs/     设计文档、阶段检查点、模块计划与历史归档
+shared/   Type và protocol dùng chung frontend/backend
+images/   Ảnh chụp preview README và sản phẩm
+scripts/  Script khởi động và hỗ trợ
+docs/     Tài liệu thiết kế, checkpoint giai đoạn, kế hoạch mô-đun và lưu trữ lịch sử
 ```
 
-更细的文档分区说明可以看 [docs/README.md](./docs/README.md)。
+Phân vùng tài liệu chi tiết hơn xem [docs/README.md](./docs/README.md).
 
-### 当前系统关注点
+### Trọng tâm hệ thống hiện tại
 
-- `Creative Hub` 负责统一创作中枢与 Agent 运行时体验
-- `Novel Setup / Director` 负责从一句灵感走到整本可写
-- `Novel Production` 负责整本生成主链
-- `Style Engine` 负责写法资产、特征提取、绑定和反 AI 协同
-- `Knowledge / Book Analysis / World` 负责长期上下文沉淀与回灌
+- `Creative Hub` đảm nhiệm trung tâm sáng tác thống nhất và trải nghiệm Agent runtime
+- `Novel Setup / Director` đảm nhiệm từ một câu ý tưởng đến cả cuốn có thể viết
+- `Novel Production` đảm nhiệm chuỗi chính sinh trọn cuốn
+- `Style Engine` đảm nhiệm tài sản cách viết, trích đặc trưng, gắn kết và phối hợp chống AI
+- `Knowledge / Book Analysis / World` đảm nhiệm lắng đọng và cập nhật ngược ngữ cảnh dài hạn
 
-## 当前路线图
+## Lộ trình hiện tại
 
-当前最重要的不是继续堆零散功能，而是提高“小白把整本书写完”的成功率。
+Việc quan trọng nhất hiện tại không phải tiếp tục chất thêm tính năng rời rạc, mà nâng tỷ lệ "người mới viết xong cả cuốn sách".
 
 ### P0
 
-- 稳定自动导演连续执行，减少误停链、重复审校和异常 Token 消耗
-- 让本书世界、角色、伏笔、时间线和章节任务稳定进入后续写作上下文
-- 降低新手从一句灵感到可连续写章之间的判断成本和修复成本
+- Ổn định Đạo diễn AI thực thi liên tục, giảm dừng chuỗi nhầm, hiệu đính lặp và tiêu thụ token bất thường
+- Để thế giới cuốn sách, nhân vật, điềm báo, dòng thời gian và nhiệm vụ chương ổn định đi vào ngữ cảnh viết tiếp
+- Giảm chi phí phán đoán và chi phí sửa chữa từ một câu ý tưởng đến viết liên tục được cho người mới
 
 ### P1
 
-- 提高整本一致性、节奏稳定性、人物成长质量和世界状态继承质量
-- 让写法资产、世界约束、章节重规划、审阅反馈和质量债形成闭环
-- 让系统更擅长“持续掌控整本书”，而不只是“生成某一章”
+- Nâng chất lượng nhất quán trọn cuốn, ổn định nhịp, tăng trưởng nhân vật và kế thừa trạng thái thế giới
+- Để tài sản cách viết, ràng buộc thế giới, lập lại kế hoạch chương, phản hồi đánh giá và nợ chất lượng thành vòng khép kín
+- Để hệ thống giỏi hơn "liên tục nắm cả cuốn sách", không chỉ "sinh ra một chương"
 
 ### P2
 
-- 继续强化多阶段 Agent 协同和运行时可观察性
-- 完善更自动化的生产调度、恢复策略、回合记忆和整本质量控制
+- Tiếp tục tăng cường phối hợp Agent đa giai đoạn và khả năng quan sát runtime
+- Hoàn thiện điều phối sản xuất tự động hơn, chiến lược khôi phục, trí nhớ lượt và kiểm soát chất lượng trọn cuốn
 
-## 交流反馈
+## Phản hồi và trao đổi
 
-如果你想反馈问题、交流使用体验，或者讨论自动导演、整本生产主链、写法引擎等方向，可以扫码加入 QQ 群。
+Nếu bạn muốn phản hồi vấn đề, trao đổi trải nghiệm sử dụng, hoặc thảo luận về Đạo diễn AI, chuỗi sản xuất trọn cuốn, công cụ cách viết..., có thể quét mã QR vào nhóm QQ của upstream.
 
-![QQ 群二维码](./images/群2.png)
+![Mã QR nhóm QQ](./images/群2.png)
 
-## 支持项目
+> 🇻🇳 Người dùng Việt Nam: vui lòng mở Issue / PR trực tiếp trên repo fork
+> [markbui123/Viet-AI-Novel-Writing-Assistant](https://github.com/markbui123/Viet-AI-Novel-Writing-Assistant).
 
-如果这个项目对你有帮助，欢迎通过支付宝扫码支持持续开发与维护。
+## Ủng hộ dự án
+
+Nếu dự án này hữu ích với bạn, chào mừng quét mã Alipay để ủng hộ phát triển và bảo trì liên tục.
 
 <p align="center">
-  <img src="./images/c838dd8eb412d6fde536b2a43f53e95.jpg" alt="支付宝捐赠二维码" width="320" />
+  <img src="./images/c838dd8eb412d6fde536b2a43f53e95.jpg" alt="Mã QR ủng hộ Alipay" width="320" />
 </p>
 
-## 贡献方式
+## Cách đóng góp
 
-如果你想参与这个项目，最有价值的贡献方向包括：
+Nếu muốn tham gia dự án này, các hướng đóng góp giá trị nhất:
 
-- 提升整本生产稳定性
-- 改善新手开书体验和自动导演成功率
-- 强化写法引擎、知识库回灌和世界观一致性链路
-- 补充测试、错误回放和运行时可观察性
+- Nâng cao ổn định sản xuất trọn cuốn
+- Cải thiện trải nghiệm mở sách cho người mới và tỷ lệ thành công Đạo diễn AI
+- Tăng cường công cụ cách viết, cập nhật ngược kho tri thức và chuỗi nhất quán thế giới quan
+- Bổ sung test, phát lại lỗi và khả năng quan sát runtime
 
-欢迎直接提 Issue 或 Pull Request。
-提交 Pull Request 即表示你确认自己有权提交该内容，并已阅读且同意 [CLA.md](./CLA.md)；如果包含第三方代码、素材、AI 生成内容或其他受许可证约束的内容，请在 PR 中明确说明来源和许可证。详见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
+Chào mừng mở Issue hoặc Pull Request trực tiếp.
+Gửi Pull Request đồng nghĩa bạn xác nhận có quyền gửi nội dung đó, và đã đọc đồng ý [CLA.md](./CLA.md); nếu chứa mã bên thứ ba, tài liệu, nội dung do AI sinh hoặc nội dung chịu ràng buộc giấy phép khác, hãy nêu rõ nguồn và giấy phép trong PR. Xem [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## 致谢
+## Cảm ơn
 
-感谢提交修复 Pull Request 的贡献者 [@ystyleb](https://github.com/ystyleb)。
+Cảm ơn contributor đã gửi Pull Request sửa lỗi [@ystyleb](https://github.com/ystyleb).
 
+## Ghi chú
 
-## 说明
+- Đây là hệ thống sáng tạo AI Native đang lặp nhanh liên tục, ranh giới tính năng vẫn đang tiến hóa.
+- README ưu tiên mô tả năng lực đáng trải nghiệm nhất, đại diện cho hướng đi hiện tại, thay vì liệt kê toàn bộ chi tiết triển khai lịch sử.
+- Nếu quan tâm mục tiêu giai đoạn, ưu tiên và kế hoạch tối ưu sau, xem thẳng [TASK.md](./TASK.md).
 
-- 这是一个持续快速迭代中的 AI Native 创作系统，功能边界仍在演化。
-- README 优先描述当前最值得体验、最能代表方向的能力，而不是列出全部历史实现细节。
-- 如果你更关心阶段目标、优先级和后续优化计划，请直接查看 [TASK.md](./TASK.md)。
+## Giấy phép
 
-## License
+Dự án này dùng chế độ cấp phép song song:
 
-本项目采用双许可证授权模式：
+- Mặc định, dự án được cấp phép theo GNU Affero General Public License v3.0 (AGPLv3), xem [LICENSE](./LICENSE); quyền sở hữu và ghi chú bổ sung xem [NOTICE](./NOTICE).
+- Thương mại dịch vụ: dùng dự án này (hoặc bản sửa đổi) làm backend cung cấp cho bên thứ ba dưới dạng SaaS, lưu trữ hoặc hình thức khác, phải lấy giấy phép thương mại từ tác giả.
+- Hãy tuân thủ điều khoản mã nguồn mở và lấy giấy phép tương ứng trong tình huống áp dụng.
 
-- 默认情况下，本项目基于 GNU Affero General Public License v3.0 (AGPLv3) 授权，详见 [LICENSE](./LICENSE)；归属与附加说明见 [NOTICE](./NOTICE)。
-- 服务型商用：将本项目（或其修改版本）作为后端以 SaaS、托管或其他形式向第三方提供服务，须通过作者获取商业授权许可。
-- 请遵守开源协议条款，并在适用场景下取得相应授权。
+Ghi chú đóng góp: đóng góp mới mặc định theo [CLA.md](./CLA.md), có thể phân phối theo AGPL-3.0-only cùng dự án, và có thể được đưa vào giấy phép thương mại riêng do người bảo trì cung cấp; xem [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-贡献说明：新贡献默认按 [CLA.md](./CLA.md) 提交，可随项目按 AGPL-3.0-only 分发，并可纳入项目维护者另行提供的商业授权；详见 [CONTRIBUTING.md](./CONTRIBUTING.md)。
-
-## 友情链接
+## Liên kết
 
 - [LINUX DO](https://linux.do/)
