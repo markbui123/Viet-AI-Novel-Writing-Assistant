@@ -23,6 +23,7 @@ const HAN_RE = /[\u4e00-\u9fff]/;
 const DICT_PATH = path.resolve(process.cwd(), "vi-i18n", "vi-dict.json");
 
 let dictCache: Record<string, string> | null = null;
+let dictKeysSorted: string[] = [];
 let dictCacheMtime = 0;
 function loadDict(): Record<string, string> {
   const stat = (() => {
@@ -33,8 +34,11 @@ function loadDict(): Record<string, string> {
     }
   })();
   if (!dictCache || stat !== dictCacheMtime) {
-    dictCache = JSON.parse(readFileSync(DICT_PATH, "utf8"));
+    const parsed = JSON.parse(readFileSync(DICT_PATH, "utf8")) as Record<string, string>;
+    dictCache = parsed;
     dictCacheMtime = stat;
+    // key dài nhất trước — khớp ưu tiên dài trước; tính 1 lần, cache lại
+    dictKeysSorted = Object.keys(parsed).sort((a, b) => b.length - a.length);
   }
   return dictCache;
 }
@@ -42,10 +46,7 @@ function loadDict(): Record<string, string> {
 /** Trả về code đã dịch; trả về code gốc nếu không có gì để dịch. */
 function translateCode(code: string): string {
   const dict = loadDict();
-  // key dài nhất trước — tránh key ngắn phá vỡ key dài (ví dụ "创作" vs "创作提醒")
-  const keys = Object.keys(dict)
-    .filter((k) => code.includes(k))
-    .sort((a, b) => b.length - a.length);
+  const keys = dictKeysSorted.filter((k) => code.includes(k));
   if (keys.length === 0) {
     return code;
   }

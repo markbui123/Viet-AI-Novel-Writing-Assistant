@@ -18,6 +18,7 @@ import path from "node:path";
 
 const DICT_PATH = path.resolve(process.cwd(), "..", "client", "vi-i18n", "vi-dict.json");
 let dict: Record<string, string> = JSON.parse(readFileSync(DICT_PATH, "utf8"));
+let dictKeysSorted: string[] = Object.keys(dict).sort((a, b) => b.length - a.length);
 let dictMtime = statSync(DICT_PATH).mtimeMs;
 const HAN_RE = /[\u4e00-\u9fff]/;
 
@@ -26,6 +27,7 @@ function reloadDictIfChanged(): void {
     const mtime = statSync(DICT_PATH).mtimeMs;
     if (mtime !== dictMtime) {
       dict = JSON.parse(readFileSync(DICT_PATH, "utf8"));
+      dictKeysSorted = Object.keys(dict).sort((a, b) => b.length - a.length);
       dictMtime = mtime;
     }
   } catch {
@@ -36,10 +38,9 @@ function reloadDictIfChanged(): void {
 function translate(s: string): string {
   reloadDictIfChanged();
   if (!HAN_RE.test(s)) return s;
-  const keys = Object.keys(dict).sort((a, b) => b.length - a.length);
   let out = s;
-  for (const key of keys) {
-    out = out.split(key).join(dict[key]);
+  for (const key of dictKeysSorted) {
+    if (out.includes(key)) out = out.split(key).join(dict[key]);
   }
   return out;
 }

@@ -19,7 +19,10 @@ const BATCH_DIR = path.join(ROOT, "client", "vi-i18n", "translations", "batches"
 const DICT_PATH = path.join(ROOT, "client", "vi-i18n", "vi-dict.json");
 
 const HAN = /[\u4e00-\u9fff]/;
-const TOKENS = (s) => new Set([...s.matchAll(/\$\{[^}]*\}/g)].map((m) => m[0]));
+// placeholder check: đếm số ${...} (agent có thể dịch chuỗi fallback BÊN TRONG
+// ${...} — "推进主线" → "đẩy mạch mạch chính" — nên so token nguyên vẹn là false
+// positive; so SỐ LƯỢNG ${ là đủ để bắt lỗi rơi mất biến)
+const PH_COUNT = (s) => (s.match(/\$\{/g) ?? []).length;
 
 const dict = existsSync(DICT_PATH) ? JSON.parse(readFileSync(DICT_PATH, "utf8")) : {};
 let added = 0, conflicts = 0, skipped = 0, errors = [];
@@ -39,11 +42,9 @@ for (const f of batchFiles) {
     if (!HAN.test(zh)) { errors.push(`${f}: key không chứa chữ Trung: ${JSON.stringify(zh)}`); continue; }
     if (typeof vi !== "string" || !vi.trim()) { errors.push(`${f}: value rỗng cho ${JSON.stringify(zh)}`); continue; }
     if (zh in dict) { conflicts++; continue; } // giữ bản cũ đã duyệt
-    // placeholder: token trong value phải khớp token trong key
-    const kt = TOKENS(zh), vt = TOKENS(vi);
-    const missing = [...kt].filter((t) => !vt.has(t));
-    if (missing.length > 0) {
-      errors.push(`${f}: thiếu placeholder ${missing.join(",")} trong bản dịch của ${JSON.stringify(zh.slice(0, 50))}`);
+    // placeholder: số lượng ${...} trong value phải bằng key (bắt lỗi rơi mất biến)
+    if (PH_COUNT(zh) !== PH_COUNT(vi)) {
+      errors.push(`${f}: số placeholder khác nhau (${PH_COUNT(zh)} vs ${PH_COUNT(vi)}) cho ${JSON.stringify(zh.slice(0, 50))}`);
       continue;
     }
     dict[zh] = vi;
