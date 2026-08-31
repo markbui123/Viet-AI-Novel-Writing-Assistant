@@ -1,5 +1,6 @@
 import type { BaseMessage } from "@langchain/core/messages";
 import type { PromptAsset, PromptRenderContext } from "../core/promptTypes";
+import { applyViOutputDirective } from "../../vi-i18n/vi-output-directive";
 import { compilePromptTemplate, hasBlockingPromptTemplateDiagnostics } from "./templateCompiler";
 import { promptTemplateOverrideService } from "./PromptTemplateOverrideService";
 import { getRequiredTemplateContextGroups, supportsAdvancedPromptTemplate } from "./templateTypes";
@@ -53,5 +54,5 @@ export async function resolveAdvancedPromptMessages<I, O, R = O>(input: {
     ].filter(Boolean).join("；");
     throw new Error(`正文写作高级模板渲染失败：${details}`);
   }
-  return compiled.messages;
+  return applyViOutputDirective(compiled.messages);
 }

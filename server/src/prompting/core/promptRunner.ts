@@ -29,6 +29,7 @@ import {
   type PromptQualityFailureKind,
 } from "./promptQualityTelemetry";
 import { appendStructuredOutputHintMessages } from "./structuredOutputHint";
+import { applyViOutputDirective } from "../../vi-i18n/vi-output-directive";
 import type {
   PromptAsset,
   PromptExecutionOptions,
@@ -280,12 +281,14 @@ export function preparePromptExecution<I, O, R = O>(input: {
   );
   const renderedMessages = input.asset.render(input.promptInput, context);
   return {
-    messages: appendStructuredOutputHintMessages({
-      asset: input.asset,
-      promptInput: input.promptInput,
-      context,
-      messages: renderedMessages,
-    }),
+    messages: applyViOutputDirective(
+      appendStructuredOutputHintMessages({
+        asset: input.asset,
+        promptInput: input.promptInput,
+        context,
+        messages: renderedMessages,
+      }),
+    ),
     context,
     invocation: buildPromptInvocationMeta(
       input.asset as PromptAsset<unknown, unknown, unknown>,
