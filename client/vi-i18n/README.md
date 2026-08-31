@@ -60,14 +60,21 @@ git push origin main
 - **Mojibake**: vài chuỗi trong source bị hỏng encoding (ví dụ `绔犺妭` = "章节")
   — đã dịch theo nghĩa khôi phục; 3 biến thể còn lại là lỗi source, không dịch
 - **Extractor bắt cả code fragments**: template literal chứa code + chữ Trung
-  (prompt hệ thống, regex...) bị capture thành key khổng lồ — ĐÃ CỐ Ý KHÔNG DỊCH
-  (20 chuỗi còn lại trong untranslated.json đều là loại này, không phải UI copy)
+  (prompt hệ thống, regex...) bị capture thành key khổng lồ. **ĐÃ XÓA 503 key
+  này khỏi dict** — chúng khớp vào vị trí CODE thật trong file khác và làm vỡ
+  build (ví dụ key `: ""}${structured...}` khớp vào ternary trong SettingsPage).
+  Chỉ giữ key "thuần text" (chữ Trung + `${...}` + dấu câu); từ Trung bên trong
+  code fragments vẫn được key ngắn riêng dịch
+- **KHÔNG thêm key không chứa chữ Trung** (meta field như `_note`): khớp substring
+  ASCII trong code → vỡ build (`_note` nằm trong `supplement_notes`). Plugin +
+  middleware đã có guard lọc key không chứa chữ Hán
 - **Server round-trip**: nếu sau này field dữ liệu bị client gửi NGƯỢC lên server
   làm key lookup (tên đã dịch), phải whitelist path trong middleware
-- **Prompts AI** (115 file, `server/src/prompting/prompts/`) CHƯA dịch — quyết định
-  AI viết bằng ngôn ngữ nào; làm sau khi UI ổn định
-- Plugin hiện `apply: "serve"` (dev). Bật cho production build/desktop khi cần:
-  bỏ `apply`, test `pnpm build`
+- **Prompts AI** (115 file, `server/src/prompting/prompts/`) — KHÔNG dịch text prompt gốc
+  (giữ nguyên để pull upstream không conflict). Thay vào đó, **chỉ thị ngôn ngữ đầu ra**
+  (`server/src/vi-i18n/vi-output-directive.ts`) được chèn vào system message của MỌI
+  prompt qua promptRunner → AI viết nội dung bằng tiếng Việt, giữ nguyên schema JSON
+- Plugin áp dụng cho **CẢ dev lẫn production build** (desktop)
 - **Dịch hàng loạt bằng MiniMax** (`scripts/translate-batch-minimax.mjs`):
   - Proxy hatinhcogi trả JSON + `\ndata: [DONE]` chèn sau → script strip dòng `data:`
   - Batch 25 chuỗi/request (lớn hơn bị 504), concurrency thấp (2-8) tránh 429 rate-limit

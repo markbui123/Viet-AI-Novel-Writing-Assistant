@@ -37,8 +37,12 @@ function loadDict(): Record<string, string> {
     const parsed = JSON.parse(readFileSync(DICT_PATH, "utf8")) as Record<string, string>;
     dictCache = parsed;
     dictCacheMtime = stat;
-    // key dài nhất trước — khớp ưu tiên dài trước; tính 1 lần, cache lại
-    dictKeysSorted = Object.keys(parsed).sort((a, b) => b.length - a.length);
+    // key dài nhất trước — khớp ưu tiên dài trước; tính 1 lần, cache lại.
+    // BỎ key không chứa chữ Trung (meta field như "_note" — nếu lọt sẽ khớp
+    // substring ASCII trong code và VỠ build: "_note" nằm trong "supplement_notes")
+    dictKeysSorted = Object.keys(parsed)
+      .filter((k) => HAN_RE.test(k))
+      .sort((a, b) => b.length - a.length);
   }
   return dictCache;
 }
@@ -61,7 +65,7 @@ export function viTranslatePlugin(): Plugin {
   return {
     name: "vi-translate",
     enforce: "pre",
-    apply: "serve", // spike: chỉ dev; build production sẽ bật sau
+    // áp dụng cho CẢ dev lẫn build (production/desktop) — bỏ apply:"serve"
     transform(code, id) {
       // Chỉ xử lý source JS/TS/JSX/TSX của chính client (không node_modules,
       // không file của lớp dịch — tránh tự dịch từ điển của mình)

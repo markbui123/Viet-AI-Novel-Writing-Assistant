@@ -27,7 +27,10 @@ function reloadDictIfChanged(): void {
     const mtime = statSync(DICT_PATH).mtimeMs;
     if (mtime !== dictMtime) {
       dict = JSON.parse(readFileSync(DICT_PATH, "utf8"));
-      dictKeysSorted = Object.keys(dict).sort((a, b) => b.length - a.length);
+      // bỏ key không chứa chữ Trung (meta field — tránh khớp substring ASCII trong code)
+      dictKeysSorted = Object.keys(dict)
+        .filter((k) => HAN_RE.test(k))
+        .sort((a, b) => b.length - a.length);
       dictMtime = mtime;
     }
   } catch {
