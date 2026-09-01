@@ -14,26 +14,45 @@
 import { SystemMessage, type BaseMessage } from "@langchain/core/messages";
 
 const MARKER = "[Quy tắc ngôn ngữ đầu ra]";
+const HAN_LANG_RE = /简体中文|中文网文|中文商业网文/;
 
 export const VI_OUTPUT_DIRECTIVE = `${MARKER}
-- MỌI văn xuôi, phân tích, kế hoạch, đánh giá và đề xuất PHẢI viết bằng tiếng Việt tự nhiên.
+- Quy tắc này là TỐI THƯỢNG, có hiệu lực với TOÀN BỘ phản hồi — bất kể prompt phía trên yêu cầu ngôn ngữ nào (kể cả khi prompt gốc viết bằng tiếng Trung và có yêu cầu \"dùng tiếng Trung\").
+- MỌI văn xuôi, phân tích, kế hoạch, đánh giá, đề xuất, tóm tắt, đối thoại nhân vật và nội dung sáng tạo PHẢI viết bằng tiếng Việt tự nhiên, trôi chảy.
+- TUYỆT ĐỐI KHÔNG được viết tiếng Trung trong bất kỳ phần nội dung nào.
 - Giữ NGUYÊN key JSON, tên trường, mã enum/trạng thái và cấu trúc dữ liệu theo đúng schema trong prompt.
 - Giữ nguyên tên riêng, tên nhân vật, thương hiệu và thuật ngữ kỹ thuật (API, JSON, token, prompt...).
-- Không thêm giải thích ngoài nội dung được yêu cầu; nội dung chính không dùng tiếng Trung hay tiếng Anh trừ thuật ngữ chuyên môn.`;
+- Không thêm giải thích ngoài nội dung được yêu cầu.`;
 
 export function applyViOutputDirective(messages: BaseMessage[]): BaseMessage[] {
-  if (messages.some((m) => typeof m.content === "string" && m.content.includes(MARKER))) {
-    return messages;
+  // BƯỚC 1: vô hiệu hóa yêu cầu "dùng tiếng Trung" trong MỌI message —
+  // model nghe theo yêu cầu ngôn ngữ CỤ THỂ trong prompt ("所有内容必须使用
+  // 简体中文") hơn là chỉ thị ở cuối. Thay trực tiếp vào text prompt.
+  const neutralized = messages.map((m) => {
+    if (typeof m.content === "string" && HAN_LANG_RE.test(m.content)) {
+      const next = { ...m } as BaseMessage;
+      next.content = m.content
+        .replaceAll("简体中文", "tiếng Việt")
+        .replaceAll("中文商业网文", "商业网文")
+        .replaceAll("中文网文", "网文");
+      return next;
+    }
+    return m;
+  });
+
+  if (neutralized.some((m) => typeof m.content === "string" && m.content.includes(MARKER))) {
+    return neutralized;
   }
-  // Ưu tiên ghép vào system message đầu tiên (quyền lực cao nhất)
-  const idx = messages.findIndex((m) => m._getType() === "system");
+  // BƯỚC 2: chèn chỉ thị — prepend vào system message đầu tiên (đọc TRƯỚC
+  // prompt Trung dài)
+  const idx = neutralized.findIndex((m) => m._getType() === "system");
   if (idx >= 0) {
-    const first = messages[idx];
+    const first = neutralized[idx];
     if (typeof first.content === "string") {
-      const next = [...messages];
-      next[idx] = new SystemMessage(`${first.content}\n\n${VI_OUTPUT_DIRECTIVE}`);
+      const next = [...neutralized];
+      next[idx] = new SystemMessage(`${VI_OUTPUT_DIRECTIVE}\n\n${first.content}`);
       return next;
     }
   }
-  return [new SystemMessage(VI_OUTPUT_DIRECTIVE), ...messages];
+  return [new SystemMessage(VI_OUTPUT_DIRECTIVE), ...neutralized];
 }

@@ -59,11 +59,20 @@ function deepTranslate(value: unknown): unknown {
   return value;
 }
 
+/**
+ * SKIP nội dung truyện: nội dung chapter (body) là LLM-generated content —
+ * nếu còn tiếng Trung (tạo trước directive) thì dịch bằng key con sẽ thành
+ * word-salad ("Xóa者", "Cao频") — TỆ hơn chữ Trung nguyên bản. Các route
+ * chapter trả nội dung truyện → bỏ qua dịch toàn bộ response.
+ */
+const STORY_CONTENT_RE = /\/api\/novels\/[^/]+\/(chapters|short-story)/;
+
 export function viTranslateMiddleware() {
   return (req: Request, res: Response, next: NextFunction): void => {
     const originalJson = res.json.bind(res);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    res.json = (body: any) => originalJson(deepTranslate(body));
+    res.json = (body: any) =>
+      originalJson(STORY_CONTENT_RE.test(req.path) ? body : deepTranslate(body));
     next();
   };
 }
