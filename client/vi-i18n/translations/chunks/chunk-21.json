@@ -1,0 +1,882 @@
+[
+ {
+  "s": "{chapter.charCount} 字",
+  "n": 2
+ },
+ {
+  "s": "{userAnchorCount} 个手动固定点",
+  "n": 2
+ },
+ {
+  "s": "补充 2-3 条必须遵守的核心规则。",
+  "n": 2
+ },
+ {
+  "s": "- ${formatIssuePath(hint.path)} 必须最终补足到恰好 ${hint.exactLength} 项；如果当前不足，按原顺序保留已有项并补齐缺失项。",
+  "n": 1
+ },
+ {
+  "s": "- ${formatIssuePath(hint.path)} 必须最终恰好保留 ${hint.exactLength} 项；如果当前超过该数量，按原顺序裁掉多余项。",
+  "n": 1
+ },
+ {
+  "s": "- 暗号是真实线索，不是幻觉或普通涂鸦。",
+  "n": 1
+ },
+ {
+  "s": "- 保持当前人称与叙事视角",
+  "n": 1
+ },
+ {
+  "s": "- 保留现有剧情事实",
+  "n": 1
+ },
+ {
+  "s": "- 必须检查本章是否完成线索发现、压力逼近和章末选择点。",
+  "n": 1
+ },
+ {
+  "s": "- 必须检查结尾是否形成新的悬念或追踪压力。",
+  "n": 1
+ },
+ {
+  "s": "- 必须检查主角行动动机是否连续，不能凭空知道暗号答案。",
+  "n": 1
+ },
+ {
+  "s": "- 避免组合：${item}",
+  "n": 1
+ },
+ {
+  "s": "- 不得让追踪者当场完整解释暗号系统。",
+  "n": 1
+ },
+ {
+  "s": "- 不得在本章直接揭开旧城组织的真实首领。",
+  "n": 1
+ },
+ {
+  "s": "- 不可直接使用：${item.name} / ${item.status} / ${item.summary}",
+  "n": 1
+ },
+ {
+  "s": "- 不新增未授权设定",
+  "n": 1
+ },
+ {
+  "s": "- 钩子：${episode.hookOpening ?? \"\"}",
+  "n": 1
+ },
+ {
+  "s": "- 尽量保留原段核心信息",
+  "n": 1
+ },
+ {
+  "s": "- 进入点：${item}",
+  "n": 1
+ },
+ {
+  "s": "- 可调整部分事实",
+  "n": 1
+ },
+ {
+  "s": "- 可调整叙事视角",
+  "n": 1
+ },
+ {
+  "s": "- 可引入补充设定",
+  "n": 1
+ },
+ {
+  "s": "- 可重组核心信息",
+  "n": 1
+ },
+ {
+  "s": "- 来源文档：${detail.documentTitle}",
+  "n": 1
+ },
+ {
+  "s": "- 来源文件名：${detail.documentFileName}",
+  "n": 1
+ },
+ {
+  "s": "- 门外脚步声逼近，迫使主角做出即时选择。",
+  "n": 1
+ },
+ {
+  "s": "- 上一任调查员的真实身份。",
+  "n": 1
+ },
+ {
+  "s": "- 未确认变更：${item.summary}；确认前不要写成已发生事实",
+  "n": 1
+ },
+ {
+  "s": "- 原文件：${detail.documentFileName}",
+  "n": 1
+ },
+ {
+  "s": "- 主角发现墙上暗号并判断它指向旧城档案站。",
+  "n": 1
+ },
+ {
+  "s": "细化",
+  "n": 1
+ },
+ {
+  "s": "的素材元",
+  "n": 1
+ },
+ {
+  "s": "端下拉用，由",
+  "n": 1
+ },
+ {
+  "s": "落羽",
+  "n": 1
+ },
+ {
+  "s": "路由流式",
+  "n": 1
+ },
+ {
+  "s": "图不会",
+  "n": 1
+ },
+ {
+  "s": "全量",
+  "n": 1
+ },
+ {
+  "s": "路由",
+  "n": 1
+ },
+ {
+  "s": "流式",
+  "n": 1
+ },
+ {
+  "s": "竖版",
+  "n": 1
+ },
+ {
+  "s": "字幕",
+  "n": 1
+ },
+ {
+  "s": "钩子",
+  "n": 1
+ },
+ {
+  "s": "｜位置",
+  "n": 1
+ },
+ {
+  "s": "{\n          let line = `格${p.order}[${p.panelType}]: ${p.action}`;\n          if (p.characterRefs) {\n            try {\n              const refs = JSON.parse(p.characterRefs) as Array",
+  "n": 1
+ },
+ {
+  "s": "{\n        // 每次写入都重新读最新 sheetData 再合并，避免覆盖三视图状态\n        const latest = await prisma.comicCharacter.findUnique({ where: { id: charId }, select: { sheetData: true } });\n        const sheet = safeJsonParse",
+  "n": 1
+ },
+ {
+  "s": "{\n      const input = analyzeQualityDebtAttributionInputSchema.parse(rawInput);\n      const novelId = input.novelId?.trim() || context.novelId;\n      if (!novelId) {\n        throw new AgentToolError(\"INVALID_INPUT\", \"没有当前小说上下文，无法执行质量债务归因分析。\");\n      }\n\n      const chapters = await prisma.chapter.findMany({\n        where: {\n          novelId,\n          order: {\n            gte: input.startOrder ?? 1,\n            ...(input.endOrder != null ? { lte: input.endOrder } : {}),\n          },\n          riskFlags: { not: null },\n        },\n        orderBy: { order: \"asc\" },\n        select: { id: true, order: true, title: true, riskFlags: true },\n      });\n\n      // 过滤出 terminalAction = defer_and_continue 的章节\n      type AttributionData = z.infer",
+  "n": 1
+ },
+ {
+  "s": "下次批次拿到",
+  "n": 1
+ },
+ {
+  "s": "{\n    const chapter = await prisma.chapter.findFirst({\n      where: { id: chapterId, novelId },\n      select: {\n        id: true,\n        order: true,\n        taskSheet: true,\n        sceneCards: true,\n        targetWordCount: true,\n        mustAvoid: true,\n        conflictLevel: true,\n        revealLevel: true,\n      },\n    });\n    if (!chapter) {\n      return;\n    }\n\n    await this.deps.ensureRouteWindow?.(novelId, chapter.order, routeOptions);\n\n    const hasCompleteTaskSheet = Boolean(chapter.taskSheet?.trim())\n      && Boolean(chapter.sceneCards?.trim())\n      && typeof chapter.targetWordCount === \"number\"\n      && Boolean(parseChapterScenePlan(chapter.sceneCards, {\n        targetWordCount: chapter.targetWordCount ?? undefined,\n      }));\n\n    // 拉取前文事实账本\n    const facts = await novelFactService.listForChapter({\n      novelId,\n      beforeChapterOrder: chapter.order,\n    });\n\n    if (hasCompleteTaskSheet && facts.length",
+  "n": 1
+ },
+ {
+  "s": "应触碰",
+  "n": 1
+ },
+ {
+  "s": "{\n    try {\n      if (schema.body) {\n        req.body = schema.body.parse(req.body);\n      }\n      if (schema.query) {\n        schema.query.parse(req.query);\n      }\n      if (schema.params) {\n        // 回写校验/强制转换后的结果，使 z.coerce.* 真正生效\n        // （req.params 为只读字典引用，用 Object.assign 原地更新而非替换引用）\n        Object.assign(req.params, schema.params.parse(req.params) as Record",
+  "n": 1
+ },
+ {
+  "s": "{\n  /** 标识，用于日志/trace（如 \"comic.character.sheet\" / \"drama.shot.keyframe\"） */\n  readonly kind: string;\n  /** 读当前状态（不存在返回 { status: \"idle\" }） */\n  loadState(): Promise",
+  "n": 1
+ },
+ {
+  "s": "{/* 标题行 */}",
+  "n": 1
+ },
+ {
+  "s": "{/* 标题行 + Provider 选择器 */}",
+  "n": 1
+ },
+ {
+  "s": "{/* 画风 — 点击展开选择器 */}",
+  "n": 1
+ },
+ {
+  "s": "{/* 开发工具区 —— 仅在 DEV 环境可见 */}\n                {import.meta.env.DEV ? (",
+  "n": 1
+ },
+ {
+  "s": "{/* 类型快捷条 = 主入口 */}",
+  "n": 1
+ },
+ {
+  "s": "{/* 删除按钮：hover 才显示 */}\n      {onDelete && (",
+  "n": 1
+ },
+ {
+  "s": "{/* 信息区 */}",
+  "n": 1
+ },
+ {
+  "s": "{/* 形态卡片 — 点击展开选择器 */}",
+  "n": 1
+ },
+ {
+  "s": "{/* 状态点 */}",
+  "n": 1
+ },
+ {
+  "s": "{/* Prompt（可编辑） */}",
+  "n": 1
+ },
+ {
+  "s": "{appearance?.snapshots.length ?? 0} 个章节快照",
+  "n": 1
+ },
+ {
+  "s": "{appliedOption.members.length} 个核心角色",
+  "n": 1
+ },
+ {
+  "s": "{assets.length} 张",
+  "n": 1
+ },
+ {
+  "s": "{candidateCharacters.length} 个候选",
+  "n": 1
+ },
+ {
+  "s": "{candidateCharacters.length} 个候选，可按需生成深度档案。",
+  "n": 1
+ },
+ {
+  "s": "{castOptions.length} 套候选方案",
+  "n": 1
+ },
+ {
+  "s": "{chaptersError || sourceError} 已生成的拆书结果不会被隐藏或删除。",
+  "n": 1
+ },
+ {
+  "s": "{characters.length} 个角色",
+  "n": 1
+ },
+ {
+  "s": "{characters.length} 个已建角色",
+  "n": 1
+ },
+ {
+  "s": "{completedCount} / {POSITIONING_FIELDS.length} 项已就绪",
+  "n": 1
+ },
+ {
+  "s": "{completeMutation.data.data?.model} 已可用于整条小说生产链。",
+  "n": 1
+ },
+ {
+  "s": "{customProfiles.length} 套",
+  "n": 1
+ },
+ {
+  "s": "{displayName} 的对话空间",
+  "n": 1
+ },
+ {
+  "s": "{draft.children.length} 个",
+  "n": 1
+ },
+ {
+  "s": "{dramaTrackLabel(props.project.track)} · {props.project.targetEpisodes} 集",
+  "n": 1
+ },
+ {
+  "s": "{ep._count?.panels ?? 0} 格",
+  "n": 1
+ },
+ {
+  "s": "{formatCount(countWords(chapter.content))} 字",
+  "n": 1
+ },
+ {
+  "s": "{formatCount(totalWordCount)} 字 · {generatedChapters.length}/{chapters.length} 章已生成",
+  "n": 1
+ },
+ {
+  "s": "{generatedChapters.length}/{chapters.length} 章 · {formatCount(totalWordCount)} 字",
+  "n": 1
+ },
+ {
+  "s": "{generatedCharacters.length} 份档案",
+  "n": 1
+ },
+ {
+  "s": "{isSavingSelectedChildren\n                  ? \"保存中...\"\n                  : `保存选中子类 (${selectedGeneratedChildIndexes.length})`}",
+  "n": 1
+ },
+ {
+  "s": "{lengthControl.finalWordCount} / {lengthControl.targetWordCount} 字",
+  "n": 1
+ },
+ {
+  "s": "{lengthControl.softMinWordCount} - {lengthControl.softMaxWordCount} 字",
+  "n": 1
+ },
+ {
+  "s": "{materials.characterCount} 位角色",
+  "n": 1
+ },
+ {
+  "s": "{model.nodes.length} 个角色",
+  "n": 1
+ },
+ {
+  "s": "{novelId\n                ? `当前小说${novelTitle ? `《${novelTitle}》` : \"\"}的“默认写法”已经放到小说基础信息页里。`\n                : \"请先进入某本小说的基础信息页，在那里确认书级默认写法。\"}",
+  "n": 1
+ },
+ {
+  "s": "{optimizationInstruction.length} 字符 · 仅用于「优化 Prompt」",
+  "n": 1
+ },
+ {
+  "s": "{outlineMut.isPending ? \"生成中...\" : `生成第 ${(episodes.length || 0) + 1}-${(episodes.length || 0) + 12} 话大纲`}",
+  "n": 1
+ },
+ {
+  "s": "{overview?.pendingCandidateCount ?? pendingCandidates.length} 个待确认候选",
+  "n": 1
+ },
+ {
+  "s": "{PLATFORM_LABELS[item.platform]} · {item.listKey}第{item.rank}名 · {item.title}",
+  "n": 1
+ },
+ {
+  "s": "{PLATFORM_LABELS[status.platform]} · {status.itemCount}项{status.status === \"stale\" ? \" · 建议刷新\" : \"\"}",
+  "n": 1
+ },
+ {
+  "s": "{preset.sectionKeys.length} 项",
+  "n": 1
+ },
+ {
+  "s": "{project._count?.episodes ?? 0} 话 · {project._count?.characters ?? 0} 角色\n            {project.sourceBundle ? \" · 已导入内容源\" : \"\"}",
+  "n": 1
+ },
+ {
+  "s": "{project.targetEpisodes} 集",
+  "n": 1
+ },
+ {
+  "s": "{props.project.targetEpisodes} 集项目",
+  "n": 1
+ },
+ {
+  "s": "{props.status.selectedProvider} · {props.status.selectedModel}，{props.status.routeCoverage.total} 类核心任务均已就绪。",
+  "n": 1
+ },
+ {
+  "s": "{readyCount} / {readinessItems.length} 个核心条件已具备",
+  "n": 1
+ },
+ {
+  "s": "{recommendMutation.isPending ? \"正在推荐写法...\" : \"生成 2-3 套写法推荐\"}",
+  "n": 1
+ },
+ {
+  "s": "{savedDraftCount} 章有正文 · {stableChapterCount} 章已稳定",
+  "n": 1
+ },
+ {
+  "s": "{scene.actualWordCount} 字",
+  "n": 1
+ },
+ {
+  "s": "{scene.targetWordCount} 字",
+  "n": 1
+ },
+ {
+  "s": "{scenes.length} 个场景",
+  "n": 1
+ },
+ {
+  "s": "{selectedBeatSheet.beats.length}个节奏段",
+  "n": 1
+ },
+ {
+  "s": "{sheet.history.length} 个历史版本",
+  "n": 1
+ },
+ {
+  "s": "{starterProfiles.length} 套",
+  "n": 1
+ },
+ {
+  "s": "{supplementalResult.candidates.length} 个候选",
+  "n": 1
+ },
+ {
+  "s": "{target.summary} 可输入范围：第 {target.startOrder}-{target.maxOrder} 章。",
+  "n": 1
+ },
+ {
+  "s": "{visibleBlocks.length} 块",
+  "n": 1
+ },
+ {
+  "s": "{visibleViewModels.length} 个可用连接",
+  "n": 1
+ },
+ {
+  "s": "{volumeCountGuidance.decisionVolumeCountRange.min}-{volumeCountGuidance.decisionVolumeCountRange.max} 卷",
+  "n": 1
+ },
+ {
+  "s": "{volumeCountGuidance.hardPlannedVolumeRange.min}-{volumeCountGuidance.hardPlannedVolumeRange.max} 卷",
+  "n": 1
+ },
+ {
+  "s": "{volumeCountGuidance.systemRecommendedVolumeCount} 卷",
+  "n": 1
+ },
+ {
+  "s": "}\n          确认并应用",
+  "n": 1
+ },
+ {
+  "s": "【样本：${range.label}｜位置 ${range.start + 1}-${range.end} / ${normalized.length}】",
+  "n": 1
+ },
+ {
+  "s": "用原",
+  "n": 1
+ },
+ {
+  "s": "时才",
+  "n": 1
+ },
+ {
+  "s": "只让",
+  "n": 1
+ },
+ {
+  "s": "某一段，比如",
+  "n": 1
+ },
+ {
+  "s": "先跑出开局样",
+  "n": 1
+ },
+ {
+  "s": "可按整书",
+  "n": 1
+ },
+ {
+  "s": "双眼间距偏宽",
+  "n": 1
+ },
+ {
+  "s": "用逗号分隔",
+  "n": 1
+ },
+ {
+  "s": "即可，例如",
+  "n": 1
+ },
+ {
+  "s": "拉满",
+  "n": 1
+ },
+ {
+  "s": "博弈",
+  "n": 1
+ },
+ {
+  "s": "此值注入",
+  "n": 1
+ },
+ {
+  "s": "管理员",
+  "n": 1
+ },
+ {
+  "s": "分格",
+  "n": 1
+ },
+ {
+  "s": "跨话",
+  "n": 1
+ },
+ {
+  "s": "一致的关键",
+  "n": 1
+ },
+ {
+  "s": "对未来",
+  "n": 1
+ },
+ {
+  "s": "图像",
+  "n": 1
+ },
+ {
+  "s": "意义的",
+  "n": 1
+ },
+ {
+  "s": "关紧要的细节",
+  "n": 1
+ },
+ {
+  "s": "类别",
+  "n": 1
+ },
+ {
+  "s": "损坏",
+  "n": 1
+ },
+ {
+  "s": "确立",
+  "n": 1
+ },
+ {
+  "s": "换装",
+  "n": 1
+ },
+ {
+  "s": "现有",
+  "n": 1
+ },
+ {
+  "s": "部分",
+  "n": 1
+ },
+ {
+  "s": "人称与",
+  "n": 1
+ },
+ {
+  "s": "未授权设定",
+  "n": 1
+ },
+ {
+  "s": "可引入",
+  "n": 1
+ },
+ {
+  "s": "设定",
+  "n": 1
+ },
+ {
+  "s": "尽量",
+  "n": 1
+ },
+ {
+  "s": "可重组",
+  "n": 1
+ },
+ {
+  "s": "${character.name}-预览图",
+  "n": 1
+ },
+ {
+  "s": "已在",
+  "n": 1
+ },
+ {
+  "s": "附近",
+  "n": 1
+ },
+ {
+  "s": "${systemPrompt}\n\n作为智能创作代理，你需要：\n- 主动分析用户需求背后的深层问题\n- 提供多个解决方案并分析各自优劣\n- 给出具体的下一步行动建议\n- 在必要时主动提问以获取更多信息",
+  "n": 1
+ },
+ {
+  "s": "1-2 集一个打脸释放；付费点前堆最大憋屈，再给最强反打。",
+  "n": 1
+ },
+ {
+  "s": "本次会优先沿用当前草稿的 ${params.volumeCountGuidance.respectedExistingVolumeCount} 卷结构，同时保持在允许区间 ${params.volumeCountGuidance.allowedVolumeCountRange.min}-${params.volumeCountGuidance.allowedVolumeCountRange.max} 内。",
+  "n": 1
+ },
+ {
+  "s": "憋屈蓄势→反转释放→新钩子；每 1-2 集一个释放点，付费点前蓄最大憋屈再给最强释放。",
+  "n": 1
+ },
+ {
+  "s": "当前还没有可推荐的写法资产。建议先去写法引擎创建或沉淀 1-2 套写法资产，再回来让系统推荐。",
+  "n": 1
+ },
+ {
+  "s": "当前还没有可推荐的写法资产。可以先去写法引擎沉淀 1-2 套，再回来为这本书做选择。",
+  "n": 1
+ },
+ {
+  "s": "当前结构档位：{volumeScaleProfileLabel}。{volumeCountGuidance.volumeCountRationale}\n                      章节预算仍会参考 {volumeCountGuidance.targetChapterRange.min}-{volumeCountGuidance.targetChapterRange.max} 章 / 卷，\n                      但系统会优先按阶段承诺、卖点切换、局面升级和阶段兑现来建议卷数。",
+  "n": 1
+ },
+ {
+  "s": "当前可执行范围 ${readiness?.executableRange?.startOrder ?? 1}-${readiness?.executableRange?.endOrder ?? selectedChapterCount} 章。",
+  "n": 1
+ },
+ {
+  "s": "当前可执行范围：第 {readiness.executableRange.startOrder}-{readiness.executableRange.endOrder} 章\n                                    {readiness.executableRange.nextChapterOrder ? ` · 下一章第 ${readiness.executableRange.nextChapterOrder} 章` : \"\"}",
+  "n": 1
+ },
+ {
+  "s": "当前没有已配置的图像模型。请先到\n                {\" \"}",
+  "n": 1
+ },
+ {
+  "s": "当前系统建议 ${params.volumeCountGuidance.systemRecommendedVolumeCount} 卷，结构建议区间 ${params.volumeCountGuidance.decisionVolumeCountRange.min}-${params.volumeCountGuidance.decisionVolumeCountRange.max} 卷。",
+  "n": 1
+ },
+ {
+  "s": "当前章节规划先以“选章 + 细化”为主。批量补任务单、连接差异和 JSON 预览默认收起，避免打断主流程。",
+  "n": 1
+ },
+ {
+  "s": "低分章节 {lowScoreRange.count} 个，可重跑范围：第 {lowScoreRange.startOrder} 章 - 第 {lowScoreRange.endOrder} 章。",
+  "n": 1
+ },
+ {
+  "s": "第 {round.roundIndex} 轮：建议 {round.suggestedWordCount ?? \"-\"} 字，实际 {round.actualWordCount} 字，\n                            {round.isFinalRound ? \"最终轮\" : \"中间轮\"}，\n                            {round.hardStopTriggered ? \"触发硬停\" : \"自然结束\"}\n                            {round.trimmedAtSentenceBoundary ? \"，按句边界截断\" : \"\"}",
+  "n": 1
+ },
+ {
+  "s": "第 ${input.startChapterIndex + 1}-${input.endChapterIndex + 1} 章：${input.startTitle} 至 ${input.endTitle}",
+  "n": 1
+ },
+ {
+  "s": "第 1 卷节奏板 + 章节列表",
+  "n": 1
+ },
+ {
+  "s": "第${first.chapterOrder}-${last.chapterOrder}章（共 ${targets.length} 章）",
+  "n": 1
+ },
+ {
+  "s": "第${group[0].chapterOrder}-${group[group.length - 1].chapterOrder}章在同一节拍内接近持平，可以检查是否需要转折点。",
+  "n": 1
+ },
+ {
+  "s": "第${values[flatStartIndex].chapterOrder}-${values[index].chapterOrder}章冲突强度变化很小，可以检查这里是否需要更清晰的推进或回报。",
+  "n": 1
+ },
+ {
+  "s": "固定卷数必须落在 ${volumeCountGuidance.allowedVolumeCountRange.min}-${volumeCountGuidance.allowedVolumeCountRange.max} 卷之间。",
+  "n": 1
+ },
+ {
+  "s": "简短描述故事的核心设定、主角和大方向（200-800 字）…",
+  "n": 1
+ },
+ {
+  "s": "进入 ani-book-agent 目录，依次运行 pnpm install 和 pnpm dev；默认工作台地址为 http://127.0.0.1:5175。",
+  "n": 1
+ },
+ {
+  "s": "卷章节范围：${activeVolume.chapters[0]?.chapterOrder ?? \"-\"}-${activeVolume.chapters[activeVolume.chapters.length - 1]?.chapterOrder ?? \"-\"}",
+  "n": 1
+ },
+ {
+  "s": "卷章节范围：${chapterOrders[0]}-${chapterOrders[chapterOrders.length - 1]}",
+  "n": 1
+ },
+ {
+  "s": "可设置范围：{limits.minMinutes}-{limits.maxMinutes} 分钟。保存后，新提交和重试的写法提取任务会使用该等待时间。",
+  "n": 1
+ },
+ {
+  "s": "例如：chapter-draft-001",
+  "n": 1
+ },
+ {
+  "s": "例如：text-embedding-3-small",
+  "n": 1
+ },
+ {
+  "s": "临时提示：漫画图片生成暂只支持 gpt-image-2。请选择已配置该模型的图片服务后再生成角色设计稿或格子图。",
+  "n": 1
+ },
+ {
+  "s": "轮次 {scene.roundCount}，硬停 {scene.hardStopCount} 次\n                      {scene.closingPhaseTriggered ? \"，包含收尾区控制\" : \"\"}",
+  "n": 1
+ },
+ {
+  "s": "面部特写 + 全身正/侧/背三视图 — 生成后锁定跨集视觉一致性",
+  "n": 1
+ },
+ {
+  "s": "你是漫画连载项目的视觉一致性管理员。\n你的任务是从本话分格脚本中提取需要跨话保持一致的关键视觉事实。\n只提取对未来话数图像生成有约束意义的事实，忽略无关紧要的细节。\n类别说明：\n- completed：已发生的重要事件（道具损坏/关系确立/场景变化）\n- revealed：首次出现的角色/地点/道具视觉描述\n- state_changed：角色状态改变（受伤/换装/情感状态）",
+  "n": 1
+ },
+ {
+  "s": "你是一位冲突设计专家，请输出 3-5 个核心冲突。",
+  "n": 1
+ },
+ {
+  "s": "你是一位专业的小说创作助手，擅长帮助作者进行小说创作、世界设定、角色设计等工作。\n- 使用 Markdown 格式组织回答\n- 提供具体、可操作的创作建议\n- 结合文学理论与商业写作实践\n- 擅长领域：写作技巧/情节构思/角色设计/世界观构建/文风建议/创作瓶颈突破",
+  "n": 1
+ },
+ {
+  "s": "请输入 {limits.minMinutes}-{limits.maxMinutes} 分钟之间的整数。",
+  "n": 1
+ },
+ {
+  "s": "请先装配内容包（source-bundle）再生成策略。",
+  "n": 1
+ },
+ {
+  "s": "扫描指定章节范围的已生成正文，检测重复场景模式（时间+地点+动作三要素重复）和章节开头重复模式，并输出诊断报告。不需要 LLM，直接基于章节内容进行结构检测。",
+  "n": 1
+ },
+ {
+  "s": "上一卷",
+  "n": 1
+ },
+ {
+  "s": "生成 2-3 套写法推荐",
+  "n": 1
+ },
+ {
+  "s": "生成第 ${(episodes.length || 0) + 1}-${(episodes.length || 0) + 12} 话大纲",
+  "n": 1
+ },
+ {
+  "s": "适合先跑出开局样章，默认第 1-10 章，可按整书章节数调整。",
+  "n": 1
+ },
+ {
+  "s": "适合只让 AI 接手某一段，比如第 11-20 章。",
+  "n": 1
+ },
+ {
+  "s": "首批路线必须覆盖 ${preparation.routeWindow.min}-${preparation.routeWindow.target} 章，优先形成可立即进入正文的因果链。",
+  "n": 1
+ },
+ {
+  "s": "输入消息并回车发送，Shift+Enter 换行。",
+  "n": 1
+ },
+ {
+  "s": "竖版视频帧风格，字幕条 + 场景感",
+  "n": 1
+ },
+ {
+  "s": "双眼间距偏宽，wide-set eyes",
+  "n": 1
+ },
+ {
+  "s": "填入 3-6 个标签，帮助后续标题、简介、章节钩子保持统一。",
+  "n": 1
+ },
+ {
+  "s": "推荐先设为 2500-3500，后续仍可按章节单独调整。",
+  "n": 1
+ },
+ {
+  "s": "拖动画布或滚轮可横向浏览更多章节；双指/Ctrl+滚轮缩放查看细节。",
+  "n": 1
+ },
+ {
+  "s": "系统会按你选定的范围，自动准备节奏板、拆章和章节执行资源，再继续写作。\n        当前质量策略：{reviewLabel}。",
+  "n": 1
+ },
+ {
+  "s": "卷预期",
+  "n": 1
+ },
+ {
+  "s": "向 Qdrant 并发提交分块批次的最大并发数。默认 3，大文档可调至 4-6 提速。",
+  "n": 1
+ },
+ {
+  "s": "询问小说进度、失败原因、执行记录或下一步入口；Enter 发送，Shift+Enter 换行。",
+  "n": 1
+ },
+ {
+  "s": "业务表 JSON 状态机 + 落盘",
+  "n": 1
+ },
+ {
+  "s": "业务表 JSON 字段 + idle→generating→done/error 状态机 + 落盘 + 清旧扩展名",
+  "n": 1
+ },
+ {
+  "s": "用 2-4 句话说明主角、核心冲突和故事看点。",
+  "n": 1
+ },
+ {
+  "s": "用逗号分隔 3-6 个标签即可，例如逆袭、强冲突、悬念拉满、职场博弈。",
+  "n": 1
+ },
+ {
+  "s": "约 {formatCount(effectiveSourceCharCount)} 字，预计拆成 {estimatedSegmentCount} 个原文片段，\n                  约 {estimatedLlmCalls} 次模型调用。",
+  "n": 1
+ },
+ {
+  "s": "允许范围：{volumeCountGuidance.allowedVolumeCountRange.min}-{volumeCountGuidance.allowedVolumeCountRange.max} 卷。固定卷数会覆盖结构建议。",
+  "n": 1
+ },
+ {
+  "s": "这本书还没有绑定默认写法。推荐先让系统根据当前小说的目标读者、卖点和前 30 章承诺给出 2-3 套候选。",
+  "n": 1
+ },
+ {
+  "s": "这里会展示系统为当前小说挑出的 2-3 套写法方案，并告诉你为什么适合、有哪些注意事项。",
+  "n": 1
+ },
+ {
+  "s": "正文后自动审核 + 自动修复",
+  "n": 1
+ },
+ {
+  "s": "最终恰好",
+  "n": 1
+ },
+ {
+  "s": "按原",
+  "n": 1
+ },
+ {
+  "s": "裁掉多余项",
+  "n": 1
+ },
+ {
+  "s": "最终补足到恰好",
+  "n": 1
+ },
+ {
+  "s": "项并",
+  "n": 1
+ },
+ {
+  "s": "雪碧",
+  "n": 1
+ },
+ {
+  "s": "N+1 JIT 预取失败（非阻断，下一章将在组装时重试）",
+  "n": 1
+ },
+ {
+  "s": "Relevant world rules\\n- 旧城暗号系统只由少数调查员和地下组织成员掌握。",
+  "n": 1
+ },
+ {
+  "s": "列表",
+  "n": 1
+ }
+]

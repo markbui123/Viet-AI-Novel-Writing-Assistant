@@ -27,8 +27,8 @@ if (!BASE || !KEY) {
   process.exit(1);
 }
 
-const SUBSIZE = 15; // chuỗi mỗi request — model free tier giới hạn output ngắn hơn
-const CONCURRENCY = 1; // serial: proxy giới hạn token/phút ("Token Plan usage limit reached, reset ~24s")
+const SUBSIZE = 25; // chuỗi mỗi request
+const CONCURRENCY = 3; // MiniMax M2.5 vừa reset quota — chạy vừa phải, 429 backoff 45s phòng hờ
 const FORCE = process.argv.includes("--force");
 const FETCH_TIMEOUT_MS = 150000;
 

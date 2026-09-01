@@ -24,13 +24,35 @@ const HAN = /[\u4e00-\u9fff]/;
 // positive; so SỐ LƯỢNG ${ là đủ để bắt lỗi rơi mất biến)
 const PH_COUNT = (s) => (s.match(/\$\{/g) ?? []).length;
 
+// CODE-FRAGMENT KEY: text segment (ngoài {} và ${}) chứa ký tự code (quote, backtick,
+// ngoặc, toán tử...) → key khớp vào vị trí CODE thật trong file khác → VỠ BUILD
+// (ví dụ key `0 ? `(${pendingCount}格)` : ""}`}` khớp vào nested template trong
+// PanelsGridPanel.tsx). Từ chối key dạng này khi merge.
+// CODE-FRAGMENT KEY → VỠ BUILD nếu lọt dict (khớp vào vị trí code thật).
+// Heuristic đã kiểm chứng bằng các lần vỡ build thực tế:
+//  - Quote/backtick (" ' `) ở depth 0: LUÔN nguy hiểm (vỡ string/template)
+//  - Ngoặc/toán tử logic (( ) [ ] ; = < > | & !) chỉ nguy hiểm khi key có
+//    NEWLINE THẬT (code fragment đa dòng). Key 1 dòng chứa [label] / ID= /
+//    gpt-image-2 là UI text hợp lệ → GIỮ.
+const CODE_MARKERS_HARD = /["'`]/;
+const CODE_MARKERS_MULTILINE = /[()\[\];=<>|&!{}]/;
+function isCodeFragmentKey(k) {
+  let depth = 0;
+  const hasRealNl = k.includes("\n");
+  for (const ch of k) {
+    if (ch === "{") depth++;
+    else if (ch === "}") depth = Math.max(0, depth - 1);
+    else if (depth === 0 && CODE_MARKERS_HARD.test(ch)) return true;
+    else if (depth === 0 && hasRealNl && CODE_MARKERS_MULTILINE.test(ch)) return true;
+  }
+  return false;
+}
+
 // SANITIZE: value không được chứa ` " ' ngoài ${...} (vỡ cú pháp code khi shim
-// thay thế trong string/template literal — "usePromptPreview.ts:84 Unterminated
-// string literal"). Đổi thành ngoặc cong “ ” ‘ ’.
-// Đồng thời: NEWLINE THẬT (model trả \n trong JSON → parse thành newline thật)
-// phải đổi về escape \n (2 ký tự) — nếu không, value nằm trong "..." sẽ vỡ string.
-// KHÔNG đụng backslash sẵn có (\\ giữ nguyên).
-function sanitizeValue(v) {
+// thay thế trong string/template literal). Đổi thành ngoặc cong “ ” ‘ ’.
+// NEWLINE: mirror theo KEY — key có newline THẬT (template đa dòng) → giữ newline
+// thật; key dùng \n escape (trong "...") → value đổi newline thật thành \n.
+function sanitizeValue(v, key) {
   const parts = [];
   let buf = "", i = 0;
   while (i < v.length) {
@@ -47,6 +69,7 @@ function sanitizeValue(v) {
     } else { buf += v[i]; i++; }
   }
   if (buf) parts.push(["t", buf]);
+  const keyHasRealNl = key.includes("\n");
   return parts.map(([typ, seg]) => {
     if (typ === "e") return seg;
     let dq = true, sq = true, bt = true, out = "";
@@ -54,9 +77,9 @@ function sanitizeValue(v) {
       if (ch === '"') { out += dq ? "“" : "”"; dq = !dq; }
       else if (ch === "'") { out += sq ? "‘" : "’"; sq = !sq; }
       else if (ch === "`") { out += bt ? "“" : "”"; bt = !bt; }
-      else if (ch === "\n") out += "\\n";
-      else if (ch === "\r") out += "\\r";
-      else if (ch === "\t") out += "\\t";
+      else if (ch === "\n") out += keyHasRealNl ? "\n" : "\\n";
+      else if (ch === "\r") out += keyHasRealNl ? "\r" : "\\r";
+      else if (ch === "\t") out += keyHasRealNl ? "\t" : "\\t";
       else out += ch;
     }
     return out;
@@ -81,12 +104,13 @@ for (const f of batchFiles) {
     if (!HAN.test(zh)) { errors.push(`${f}: key không chứa chữ Trung: ${JSON.stringify(zh)}`); continue; }
     if (typeof vi !== "string" || !vi.trim()) { errors.push(`${f}: value rỗng cho ${JSON.stringify(zh)}`); continue; }
     if (zh in dict) { conflicts++; continue; } // giữ bản cũ đã duyệt
+    if (isCodeFragmentKey(zh)) { errors.push(`${f}: key là code fragment (bỏ qua): ${JSON.stringify(zh.slice(0, 60))}`); continue; }
     // placeholder: số lượng ${...} trong value phải bằng key (bắt lỗi rơi mất biến)
     if (PH_COUNT(zh) !== PH_COUNT(vi)) {
-      errors.push(`${f}: số placeholder khác nhau (${PH_COUNT(zh)} vs ${PH_COUNT(vi)}) cho ${JSON.stringify(zh.slice(0, 50))}`);
+      errors.push(`${f}: số placeholder khác nhau (${PH_COUNT(zh)} vs ${PH_COUNT(vi)}) cho ${JSON.stringify(zh.slice(0, 50))}`); 
       continue;
     }
-    dict[zh] = sanitizeValue(vi);
+    dict[zh] = sanitizeValue(vi, zh);
     added++;
   }
 }
